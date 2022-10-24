@@ -5,6 +5,7 @@ This repository contains the public FTC SDK for the Freight Frenzy (2021-2022) c
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
+
 ## Getting Started
 If you are new to robotics or new to the *FIRST* Tech Challenge, then you should consider reviewing the [FTC Blocks Tutorial](https://github.com/FIRST-Tech-Challenge/FtcRobotController/wiki/Blocks-Tutorial) to get familiar with how to use the control system:
 
@@ -23,7 +24,7 @@ If you are an Android Studio programmer, there are several ways to download this
 
 * You can also download the project folder (as a .zip or .tar.gz archive file) from the Downloads subsection of the [Releases](https://github.com/FIRST-Tech-Challenge/FtcRobotController/releases) page for this repository.
 
-* The Releases page also contains prebuilt APKs.
+* The Releases page also contains prebtuilt APKs.
 
 Once you have downloaded and uncompressed (if needed) your folder, you can use Android Studio to import the folder  ("Import project (Eclipse ADT, Gradle, etc.)").
 
