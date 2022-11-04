@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import encoders.MecanumEncoder;
+import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 @Autonomous
 public class MecanumAutonomous extends LinearOpMode {

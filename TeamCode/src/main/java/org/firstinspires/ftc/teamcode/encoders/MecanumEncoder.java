@@ -1,4 +1,4 @@
-package encoders;
+package org.firstinspires.ftc.teamcode.encoders;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
