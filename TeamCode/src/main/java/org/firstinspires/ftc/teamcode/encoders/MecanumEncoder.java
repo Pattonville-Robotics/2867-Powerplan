@@ -41,6 +41,7 @@ public class MecanumEncoder {
     }
 
     public void rotateDegrees(float degrees) throws InterruptedException {
+        boolean isRotating = true;
         float time = Math.abs(degrees)/90;
 
         if (degrees > 0) {
@@ -52,9 +53,10 @@ public class MecanumEncoder {
         linearOp.wait((long)(1000 * time));
 
         setPower(0,0,0,0);
+        isRotating = false;
     }
 
-    public void setPower(float frontLeft, float backLeft, float frontRight, float backRight) {
+    public void setPower(double frontLeft, double backLeft, double frontRight, double backRight) {
         motorFrontLeft.setPower(frontLeft);
         motorBackLeft.setPower(backLeft);
         motorFrontRight.setPower(frontRight);
