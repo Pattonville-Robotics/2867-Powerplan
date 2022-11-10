@@ -21,21 +21,21 @@ public class LinearSlideEncoder {
         return (height);
     }
 
-    public void changeHeight(float inches) throws InterruptedException{
-        float time = 0.5f * Math.abs(inches);
+    public void changeHeight(float inches, float speed) throws InterruptedException{
+        float time = 0.5f * Math.abs(inches) * (1/speed);
 
         // 1 or -1 if inches in pos. or neg.
         float dir = inches/(Math.abs(inches));
 
-        motorLinearSlide.setPower(1*dir);
+        motorLinearSlide.setPower(speed*dir);
         linearOp.wait( (long) (1000 * time) );
         motorLinearSlide.setPower(0);
         height += inches;
     }
 
-    public void setHeight(float inches) throws InterruptedException{
+    public void setHeight(float inches, float speed) throws InterruptedException{
         float target = height - inches;
-        changeHeight(target);
+        changeHeight(target, speed);
     }
 
 }
