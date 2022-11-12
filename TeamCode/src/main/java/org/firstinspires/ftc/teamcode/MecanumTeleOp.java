@@ -58,7 +58,7 @@ public class MecanumTeleOp extends LinearOpMode {
                 sEncoder.changeHeight(-1, slideSpeed);
             }
             if (!(dpU.get() && dpD.get())) {
-                sEncoder.changeHeight(0, 0);
+                sEncoder.changeHeight(0, 1);
                 // Potentially redundant; stops the slide from moving when neither D-Pad buttons is pressed. (THEORETICALLY)
             }
 
