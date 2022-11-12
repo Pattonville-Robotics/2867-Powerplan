@@ -83,6 +83,18 @@ public class MecanumEncoder {
 //        setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    public void move(double forwardInches, double rightInches, double power) throws InterruptedException {
+        move(new Vector2d(forwardInches, rightInches), power);
+    }
+
+    public void moveForward(double inches, double power) throws InterruptedException {
+        move(new Vector2d(inches, 0), power);
+    }
+
+    public void moveForward(double inches) throws InterruptedException {
+        moveForward(inches, 1);
+    }
+
     public void setPower(double frontLeft, double backLeft, double frontRight, double backRight) {
         motorFrontLeft.setPower(frontLeft);
         motorBackLeft.setPower(backLeft);

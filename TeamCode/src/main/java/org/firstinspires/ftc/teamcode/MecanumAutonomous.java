@@ -14,10 +14,6 @@ public class MecanumAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        encoder.moveForward(5);
-        encoder.rotateDegrees(90);
-        encoder.moveForward(5);
-        encoder.rotateDegrees(-180);
-        encoder.moveForward(10);
+        encoder.moveForward(15);
     }
 }
