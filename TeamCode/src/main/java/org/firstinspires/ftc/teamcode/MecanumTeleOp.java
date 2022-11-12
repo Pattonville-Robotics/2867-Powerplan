@@ -57,7 +57,6 @@ public class MecanumTeleOp extends LinearOpMode {
             if (dpD.get()) {
                 sEncoder.changeHeight(-1, slideSpeed);
             }
-
             // Claw
             ButtonReader a = new ButtonReader(gamepad, GamepadKeys.Button.A);
 
