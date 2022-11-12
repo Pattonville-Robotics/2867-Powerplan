@@ -36,7 +36,8 @@ public class MecanumTeleOp extends LinearOpMode {
             double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
-            mEncoder.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
+            mEncoder.setPower(-frontLeftPower, -backLeftPower, -frontRightPower, -backRightPower);
+            // Positive numbers were inverted controls ^
 
             // Linear slide speed
             ButtonReader rB = new ButtonReader(gamepad, GamepadKeys.Button.RIGHT_BUMPER);
@@ -64,6 +65,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
             // Claw
             ButtonReader a = new ButtonReader(gamepad, GamepadKeys.Button.A);
+
 
         }
     }
