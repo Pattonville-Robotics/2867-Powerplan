@@ -26,8 +26,8 @@ public class MecanumEncoder {
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        motorBackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorFrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        motorBackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void moveForward(float inches) throws InterruptedException {
@@ -41,7 +41,6 @@ public class MecanumEncoder {
     }
 
     public void rotateDegrees(float degrees) throws InterruptedException {
-        boolean isRotating = true;
         float time = Math.abs(degrees)/90;
 
         if (degrees > 0) {
@@ -53,7 +52,6 @@ public class MecanumEncoder {
         linearOp.wait((long)(1000 * time));
 
         setPower(0,0,0,0);
-        isRotating = false;
     }
 
     public void setPower(double frontLeft, double backLeft, double frontRight, double backRight) {

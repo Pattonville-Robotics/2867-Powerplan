@@ -15,7 +15,7 @@ public class MecanumTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         GamepadEx gamepad = new GamepadEx(gamepad1);
-        final LinearSlideEncoder sEncoder = new LinearSlideEncoder(this);
+//        final LinearSlideEncoder sEncoder = new LinearSlideEncoder(this);
         final MecanumEncoder mEncoder = new MecanumEncoder(this);
 
         waitForStart();
@@ -36,7 +36,7 @@ public class MecanumTeleOp extends LinearOpMode {
             double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
-            mEncoder.setPower(-frontLeftPower, -backLeftPower, -frontRightPower, -backRightPower);
+            mEncoder.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
             // Positive numbers were inverted controls ^
 
             // Linear slide speed
@@ -50,18 +50,18 @@ public class MecanumTeleOp extends LinearOpMode {
                 slideSpeed += 0.05;
             }
             // Linear slide movement
-            GamepadButton dpU = new GamepadButton(gamepad, GamepadKeys.Button.DPAD_UP);
-            GamepadButton dpD = new GamepadButton(gamepad, GamepadKeys.Button.DPAD_DOWN);
-            if (dpU.get()) {
-                sEncoder.changeHeight(1, slideSpeed);
-            }
-            if (dpD.get()) {
-                sEncoder.changeHeight(-1, slideSpeed);
-            }
-            if (!(dpU.get() && dpD.get())) {
-                sEncoder.changeHeight(0, 1);
-                // Potentially redundant; stops the slide from moving when neither D-Pad buttons is pressed. (THEORETICALLY)
-            }
+//            GamepadButton dpU = new GamepadButton(gamepad, GamepadKeys.Button.DPAD_UP);
+//            GamepadButton dpD = new GamepadButton(gamepad, GamepadKeys.Button.DPAD_DOWN);
+//            if (dpU.get()) {
+//                sEncoder.changeHeight(1, slideSpeed);
+//            }
+//            if (dpD.get()) {
+//                sEncoder.changeHeight(-1, slideSpeed);
+//            }
+//            if (!(dpU.get() && dpD.get())) {
+//                sEncoder.changeHeight(0, 1);
+//                // Potentially redundant; stops the slide from moving when neither D-Pad buttons is pressed. (THEORETICALLY)
+//            }
 
             // Claw
             ButtonReader a = new ButtonReader(gamepad, GamepadKeys.Button.A);
