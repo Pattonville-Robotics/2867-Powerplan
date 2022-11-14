@@ -143,13 +143,17 @@ public class TensorFlowAutonomous extends LinearOpMode {
 
                     if (mostConfRecog.getLabel().equals(LABELS[0])){
                         // bolt is seen
+                        telemetry.addData(">","bolt");
                     }
                     else if (mostConfRecog.getLabel().equals(LABELS[1])){
                         // bulb is seen
+                        telemetry.addData(">","bulb");
                     }
                     else if (mostConfRecog.getLabel().equals(LABELS[2])){
                         // panel is seen
+                        telemetry.addData(">","panel");
                     }
+                    telemetry.update();
 
                 }
             }
