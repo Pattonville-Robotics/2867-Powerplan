@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -14,10 +15,11 @@ public class MecanumAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        encoder.moveForward(5);
-        encoder.rotateDegrees(90);
-        encoder.moveForward(5);
-        encoder.rotateDegrees(-180);
-        encoder.moveForward(10);
+        encoder.move(new Vector2d(5,5),1);
+        encoder.rotateDegrees(true,90,1);
+        encoder.move(new Vector2d(5,5),1);
+        encoder.rotateDegrees(true,-180,1);
+        encoder.move(new Vector2d(10,10),1);
+
     }
 }
