@@ -37,7 +37,6 @@ public class MecanumTeleOp extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
             mEncoder.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
-            // Positive numbers were inverted controls ^
 
             // Linear slide speed
             ButtonReader rB = new ButtonReader(gamepad, GamepadKeys.Button.RIGHT_BUMPER);
@@ -58,7 +57,7 @@ public class MecanumTeleOp extends LinearOpMode {
 //            if (dpD.get()) {
 //                sEncoder.changeHeight(-1, slideSpeed);
 //            }
-//            if (!(dpU.get() && dpD.get())) {
+//            if (!(dpU.get() || dpD.get())) {
 //                sEncoder.changeHeight(0, 1);
 //                // Potentially redundant; stops the slide from moving when neither D-Pad buttons is pressed. (THEORETICALLY)
 //            }
