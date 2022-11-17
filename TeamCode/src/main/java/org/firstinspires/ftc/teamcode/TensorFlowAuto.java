@@ -142,15 +142,15 @@ public class TensorFlowAuto extends LinearOpMode {
         }
 
         // Move forward in line with the 3 parking locations
-        encoder.moveForward(24, 0.3);
+        encoder.moveForward(28, 0.5);
 
         // Check for the most confident tensorflow object's label and move accordingly
         if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("1 Bolt")) {
-            encoder.move(0, -23.5, 0.3);
-        } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("2 Bulb")) {
-            // stay in place
-        } else { // cone should be displaying 3
-            encoder.move(0, 23.5, 0.3);
+            encoder.move(0, -27.5, 0.5);
+        } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("3 Panel")) {
+            encoder.move(0, 27.5, 0.5);
+        } else { // cone should be displaying 2
+            // do nothing
         }
     }
 

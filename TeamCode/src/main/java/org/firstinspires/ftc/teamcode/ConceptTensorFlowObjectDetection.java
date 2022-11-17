@@ -1,3 +1,5 @@
+package org.firstinspires.ftc.teamcode;
+
 /* Copyright (c) 2019 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -27,11 +29,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
-
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import java.util.List;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -49,11 +49,9 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous //(name = "Concept: TensorFlow Object Detection", group = "Concept")
+@TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
 @Disabled
-public class TensorFlowAutonomous extends LinearOpMode {
-
-    private Recognition mostConfRecog = null;
+public class ConceptTensorFlowObjectDetection extends LinearOpMode {
 
     /*
      * Specify the source for the Tensor Flow Model.
@@ -71,6 +69,18 @@ public class TensorFlowAutonomous extends LinearOpMode {
             "3 Panel"
     };
 
+    /*
+     * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
+     * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
+     * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
+     * web site at https://developer.vuforia.com/license-manager.
+     *
+     * Vuforia license keys are always 380 characters long, and look as if they contain mostly
+     * random data. As an example, here is a example of a fragment of a valid key:
+     *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
+     * Once you've obtained a license key, copy the string from the Vuforia web site
+     * and paste it in to your code on the next line, between the double quotes.
+     */
     private static final String VUFORIA_KEY =
             "AQgNQyb/////AAABmVn25FapUkROlmZ0CoTaydkoC388zTGjUMsc9Fz/V+xfFRoFrVt85TqwClbnVsOzuDpJJW37YK8oigyZjPUgnVDePvOKUhmOol4UKYkhDJ/HjRe6/ATPNJOeH0DXarA0IlzmRFYoDqoTG5Pp9bri32cI87bpr8KklvouJ6bJlzQA2r512tbH09x4sfETZJfrtBaLPM6uH5ie7rBrzQgQT88ui45C3R/bTDh8YKIj2M0hNbCdHOm3j95A8k0D0Y7pdoFscD3P2I6rftqTtJzkAQFOgP6N1/ijZAYJzlRqNXMTbYRCfjZCzYcJOWTBmWeUdWfVMfET+37swfMtxhOh8U1WPTt4zPyLSVxl8FIwMvuo";
 
@@ -109,9 +119,6 @@ public class TensorFlowAutonomous extends LinearOpMode {
             tfod.setZoom(1.0, 16.0/9.0);
         }
 
-//        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-//        mostConfRecog = updatedRecognitions.get(0);
-
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
@@ -126,36 +133,21 @@ public class TensorFlowAutonomous extends LinearOpMode {
                     if (updatedRecognitions != null) {
                         telemetry.addData("# Objects Detected", updatedRecognitions.size());
 
-                        // step through the list of recognitions and set mostConfRecog to whichever has greater confidence
+                        // step through the list of recognitions and display image position/size information for each one
+                        // Note: "Image number" refers to the randomized image orientation/number
                         for (Recognition recognition : updatedRecognitions) {
+                            double col = (recognition.getLeft() + recognition.getRight()) / 2 ;
+                            double row = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+                            double width  = Math.abs(recognition.getRight() - recognition.getLeft()) ;
+                            double height = Math.abs(recognition.getTop()  - recognition.getBottom()) ;
 
-                            if (mostConfRecog != null && mostConfRecog.getConfidence() < recognition.getConfidence()){
-                                mostConfRecog = recognition;
-                            }
-
+                            telemetry.addData(""," ");
+                            telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100 );
+                            telemetry.addData("- Position (Row/Col)","%.0f / %.0f", row, col);
+                            telemetry.addData("- Size (Width/Height)","%.0f / %.0f", width, height);
                         }
-
                         telemetry.update();
                     }
-                }
-
-                else{
-                    // no new tfod information
-
-                    if (mostConfRecog.getLabel().equals(LABELS[0])){
-                        // bolt is seen
-                        //telemetry.addData(">","bolt");
-                    }
-                    else if (mostConfRecog.getLabel().equals(LABELS[1])){
-                        // bulb is seen
-                        //telemetry.addData(">","bulb");
-                    }
-                    else if (mostConfRecog.getLabel().equals(LABELS[2])){
-                        // panel is seen
-                        //telemetry.addData(">","panel");
-                    }
-                    telemetry.update();
-
                 }
             }
         }
