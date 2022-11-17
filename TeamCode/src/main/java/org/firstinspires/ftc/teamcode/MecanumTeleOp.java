@@ -14,17 +14,18 @@ import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 public class MecanumTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        GamepadEx gamepad = new GamepadEx(gamepad1);
-//        final LinearSlideEncoder sEncoder = new LinearSlideEncoder(this);
+        GamepadEx controller1 = new GamepadEx(gamepad1);
+        GamepadEx controller2 = new GamepadEx(gamepad2);
+        final LinearSlideEncoder sEncoder = new LinearSlideEncoder(this);
         final MecanumEncoder mEncoder = new MecanumEncoder(this);
 
         waitForStart();
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            double y = -gamepad.getLeftY(); // Remember, this is reversed!
-            double x = -gamepad.getLeftX() * 1.1; // Counteract imperfect strafing
-            double rx = gamepad.getRightX();
+            double y = -controller1.getLeftY(); // Remember, this is reversed!
+            double x = controller1.getLeftX() * 1.1; // Counteract imperfect strafing
+            double rx = controller1.getRightX();
             /*
             Denominator is the largest motor power (absolute value) or 1
             This ensures all the powers maintain the same ratio, but only when
@@ -39,8 +40,8 @@ public class MecanumTeleOp extends LinearOpMode {
             mEncoder.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
 
             // Linear slide speed
-            ButtonReader rB = new ButtonReader(gamepad, GamepadKeys.Button.RIGHT_BUMPER);
-            ButtonReader lB = new ButtonReader(gamepad, GamepadKeys.Button.LEFT_BUMPER);
+            ButtonReader rB = new ButtonReader(controller2, GamepadKeys.Button.RIGHT_BUMPER);
+            ButtonReader lB = new ButtonReader(controller2, GamepadKeys.Button.LEFT_BUMPER);
             float slideSpeed = (float) 1;
             if (lB.wasJustPressed() && slideSpeed > 0.05) {
                 slideSpeed -= 0.05;
@@ -49,21 +50,11 @@ public class MecanumTeleOp extends LinearOpMode {
                 slideSpeed += 0.05;
             }
             // Linear slide movement
-//            GamepadButton dpU = new GamepadButton(gamepad, GamepadKeys.Button.DPAD_UP);
-//            GamepadButton dpD = new GamepadButton(gamepad, GamepadKeys.Button.DPAD_DOWN);
-//            if (dpU.get()) {
-//                sEncoder.changeHeight(1, slideSpeed);
-//            }
-//            if (dpD.get()) {
-//                sEncoder.changeHeight(-1, slideSpeed);
-//            }
-//            if (!(dpU.get() || dpD.get())) {
-//                sEncoder.changeHeight(0, 1);
-//                // Potentially redundant; stops the slide from moving when neither D-Pad buttons is pressed. (THEORETICALLY)
-//            }
+            GamepadButton dpU = new GamepadButton(controller2, GamepadKeys.Button.DPAD_UP);
+            GamepadButton dpD = new GamepadButton(controller2, GamepadKeys.Button.DPAD_DOWN);
 
             // Claw
-            ButtonReader a = new ButtonReader(gamepad, GamepadKeys.Button.A);
+//            ButtonReader a = new ButtonReader(controller2, GamepadKeys.Button.A);
 
 
         }
