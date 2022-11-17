@@ -6,8 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.dependencies.RobotParameters;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MecanumEncoder {
@@ -27,6 +29,7 @@ public class MecanumEncoder {
         motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
         motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
 
+        motors = new ArrayList<>();
         motors.add(motorFrontLeft);
         motors.add(motorBackLeft);
         motors.add(motorFrontRight);
@@ -47,8 +50,9 @@ public class MecanumEncoder {
     public void move(Vector2d direction, double power) throws InterruptedException {
         setMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        double y = -direction.getY(); // Remember, this is reversed!
-        double x = direction.getX() * 1.1; // Counteract imperfect strafing
+        Vector2d normal = direction.normalize();
+        double y = normal.getY(); // Remember, this is reversed!
+        double x = normal.getX() * 1.1; // Counteract imperfect strafing
             /*
             Denominator is the largest motor power (absolute value) or 1
             This ensures all the powers maintain the same ratio, but only when
@@ -60,35 +64,34 @@ public class MecanumEncoder {
         double backLeftPower = (y - x) / denominator;
         double frontRightPower = (y - x) / denominator;
         double backRightPower = (y + x) / denominator;
+
+        double dy = direction.getY(); // Remember, this is reversed!
+        double dx = direction.getX() * 1.1; // Counteract imperfect strafing
+        int frontLeftTicks = (int) inchesToTicks(dy + dx);
+        int backLeftTicks = (int) inchesToTicks(dy - dx);
+        int frontRightTicks = (int) inchesToTicks(dy - dx);
+        int backRightTicks = (int) inchesToTicks(dy + dx);
+
         setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
-
-        double distanceTicks = inchesToTicks(direction.magnitude());
-        int frontLeftTicks = (int)(frontLeftPower * distanceTicks * 1/power);
-        int backLeftTicks = (int)(frontLeftPower * distanceTicks * 1/power);
-        int frontRightTicks = (int)(frontLeftPower * distanceTicks * 1/power);
-        int backRightTicks = (int)(frontLeftPower * distanceTicks * 1/power);
-
+        setMotorTargets(frontLeftTicks, frontRightTicks, backLeftTicks, backRightTicks);
         setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motorFrontLeft.setTargetPosition(frontLeftTicks);
-        motorBackLeft.setTargetPosition(backLeftTicks);
-        motorFrontRight.setTargetPosition(frontRightTicks);
-        motorBackRight.setTargetPosition(backRightTicks);
 
-        while (areMotorsBusy() || !motorsReachedTarget(frontLeftTicks, frontRightTicks, backLeftTicks, backRightTicks) && linearOp.opModeIsActive()){
+        while (areMotorsBusy() && linearOp.opModeIsActive()){
             Thread.yield();
         }
 
         setPower(0, 0, 0, 0);
         linearOp.sleep(100);
 //        setMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     public void move(double forwardInches, double rightInches, double power) throws InterruptedException {
-        move(new Vector2d(forwardInches, rightInches), power);
+        move(new Vector2d(rightInches, forwardInches), power);
     }
 
     public void moveForward(double inches, double power) throws InterruptedException {
-        move(new Vector2d(inches, 0), power);
+        move(new Vector2d(0, inches), power);
     }
 
     public void moveForward(double inches) throws InterruptedException {
@@ -130,12 +133,11 @@ public class MecanumEncoder {
             backRightTicks = ticksToTravel;
         }
 
-        setMotorTargets(frontLeftTicks, frontRightTicks, backLeftTicks, backRightTicks);;
-
-        setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
         setPower(power);
+        setMotorTargets(frontLeftTicks, frontRightTicks, backLeftTicks, backRightTicks);
+        setMotorMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (areMotorsBusy() || !motorsReachedTarget(frontLeftTicks, frontRightTicks, backLeftTicks, backRightTicks) && linearOp.opModeIsActive()){
+        while (areMotorsBusy() && linearOp.opModeIsActive()){
             Thread.yield();
         }
 
@@ -149,7 +151,7 @@ public class MecanumEncoder {
     }
     public double inchesToTicks(double inches){
 //        return (int)((inches / this.rP.wheelCircumference) * this.rP.ticks);
-        return (inches / RobotParameters.wheelCircumference) * RobotParameters.ticksPerInch;
+        return (inches / RobotParameters.wheelCircumference) * RobotParameters.ticksPerRevolution;
     }
 
     public void resetEncoders(){
@@ -165,15 +167,14 @@ public class MecanumEncoder {
         }
         return false;
     }
-
-    public int TARGET_REACHED_THRESHOLD = 3;
-    protected boolean motorsReachedTarget(int... targetPositions) {
-        for (int i = 0; i < 4; i++) {
-            if (Math.abs(motors.get(i).getCurrentPosition() - targetPositions[i]) >= TARGET_REACHED_THRESHOLD)
-                return false;
-        }
-        return false;
-    }
+//
+//    public int TARGET_REACHED_THRESHOLD = 3;
+//    protected boolean motorsReachedTarget(int... targetPositions) {
+//        for (int i = 0; i < 4; i++) {
+//
+//        }
+//        return false;
+//    }
 
     protected void setMotorTargets(final int targetPostitionLeft, final int targetPostitionRight){setMotorTargets(targetPostitionLeft, targetPostitionRight, targetPostitionLeft, targetPostitionRight);}
 
