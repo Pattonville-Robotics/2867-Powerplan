@@ -40,23 +40,41 @@ public class MecanumTeleOp extends LinearOpMode {
             mEncoder.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
 
             // Linear slide speed
-            ButtonReader rB = new ButtonReader(controller2, GamepadKeys.Button.RIGHT_BUMPER);
-            ButtonReader lB = new ButtonReader(controller2, GamepadKeys.Button.LEFT_BUMPER);
-            float slideSpeed = (float) 1;
-            if (lB.wasJustPressed() && slideSpeed > 0.05) {
-                slideSpeed -= 0.05;
-            }
-            if (rB.wasJustPressed() && slideSpeed < 2) {
-                slideSpeed += 0.05;
-            }
+            float LT = gamepad2.left_trigger;
+            float slideSpeed = (LT == 0) ? 1 : LT;
+
             // Linear slide movement
-            GamepadButton dpU = new GamepadButton(controller2, GamepadKeys.Button.DPAD_UP);
-            GamepadButton dpD = new GamepadButton(controller2, GamepadKeys.Button.DPAD_DOWN);
+            ButtonReader a2 = new ButtonReader(controller2, GamepadKeys.Button.A);
+            ButtonReader x2 = new ButtonReader(controller2, GamepadKeys.Button.X);
+            ButtonReader y2 = new ButtonReader(controller2, GamepadKeys.Button.Y);
+            GamepadButton LB = new GamepadButton(controller2, GamepadKeys.Button.LEFT_BUMPER);
+
+            if (a2.wasJustPressed()) {
+                sEncoder.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
+            }
+            if (x2.wasJustPressed()) {
+                sEncoder.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
+            }
+            if (y2.wasJustPressed()) {
+                sEncoder.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
+            }
+            if (a2.wasJustPressed() && LB.get()) {  // LB held and A pressed
+                sEncoder.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+            }
 
             // Claw
-//            ButtonReader a = new ButtonReader(controller2, GamepadKeys.Button.A);
-
-
+            ButtonReader b2 = new ButtonReader(controller2, GamepadKeys.Button.B);
+            boolean clawOpen = false;
+            if (b2.wasJustPressed()) {
+                clawOpen = !clawOpen;
+                if (clawOpen) {
+                    return;
+                    // open the claw
+                } else {
+                    return;
+                    // close the claw
+                }
+            }
         }
     }
 }
