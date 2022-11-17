@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
@@ -18,6 +19,7 @@ public class MecanumTeleOp extends LinearOpMode {
         GamepadEx controller2 = new GamepadEx(gamepad2);
         final LinearSlideEncoder sEncoder = new LinearSlideEncoder(this);
         final MecanumEncoder mEncoder = new MecanumEncoder(this);
+        final ClawEncoder cEncoder = new ClawEncoder(this);
 
         waitForStart();
         if (isStopRequested()) return;
@@ -64,16 +66,8 @@ public class MecanumTeleOp extends LinearOpMode {
 
             // Claw
             ButtonReader b2 = new ButtonReader(controller2, GamepadKeys.Button.B);
-            boolean clawOpen = false;
             if (b2.wasJustPressed()) {
-                clawOpen = !clawOpen;
-                if (clawOpen) {
-                    return;
-                    // open the claw
-                } else {
-                    return;
-                    // close the claw
-                }
+                cEncoder.toggleClaw();
             }
         }
     }

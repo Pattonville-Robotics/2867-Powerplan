@@ -23,9 +23,6 @@ public class LinearSlideEncoder {
         LinearPosition(int i) {this.ticks = 1;}
     }
 
-
-
-
     public float getHeight(){
         return (height);
     }
