@@ -22,12 +22,12 @@ public class LinearSlideEncoder {
 
     public enum LinearPosition {
         ZERO(0),
-        ONE(850),
-        TWO(1350),
-        THREE(1850),
-        CONE1(200),
-        CONE2(400),
-        CONE3(600);
+        ONE(1000),
+        TWO(1600),
+        THREE(2200),
+        CONE1(60),
+        CONE2(120),
+        CONE3(180);
         private final int ticks;
         LinearPosition(int i) {this.ticks = i;}
     }

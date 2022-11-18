@@ -127,17 +127,14 @@ public class TensorFlowAuto extends LinearOpMode {
         /** Wait for the game to begin */
         waitForStart();
 
-        // getUpdatedRecognitions() will return null if no new information is available since
-        // the last time that call was made.
+        // Get the current list of all recognitions ad the time play is pressed.
         List<Recognition> recognitions = tfod.getRecognitions();
 
         // get the most confident recognition
         Recognition mostConfidentRecognition = null;
-        float highestConfidence = 0;
         for (Recognition recognition : recognitions) {
-            if (recognition.getConfidence() > highestConfidence) {
+            if (mostConfidentRecognition == null || recognition.getConfidence() > mostConfidentRecognition.getConfidence()) {
                 mostConfidentRecognition = recognition;
-                highestConfidence = recognition.getConfidence();
             }
         }
 
@@ -177,7 +174,8 @@ public class TensorFlowAuto extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
             "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.75f;
+        // very low confidence threshold, we only need to see the most confident recognition anyways
+        tfodParameters.minResultConfidence = 0.4f;
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
