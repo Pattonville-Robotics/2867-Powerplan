@@ -74,10 +74,18 @@ public class MecanumTeleOp extends LinearOpMode {
             float LT = gamepad2.left_trigger;
             slideSpeed = (LT == 0) ? 0.05f : 0.05f*LT;
 
+            // Linear slide
             if (gamepad1.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
             if (gamepad1.x) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
             if (gamepad1.y) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
             if (gamepad1.b) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+
+            if (gamepad1.dpad_down) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, slideSpeed);
+            if (gamepad1.dpad_left) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE2, slideSpeed);
+            if (gamepad1.dpad_up) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE3, slideSpeed);
+            if (gamepad1.dpad_right) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+
+            // Claw
             if (gamepad1.left_bumper) claw.openClaw();
             if (gamepad1.right_bumper) claw.closeClaw();
 

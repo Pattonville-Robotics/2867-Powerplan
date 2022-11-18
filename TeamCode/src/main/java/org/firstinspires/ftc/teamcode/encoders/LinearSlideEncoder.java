@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class LinearSlideEncoder {
     LinearOpMode linearOp;
     DcMotor motor;
-    private float height;
     public LinearPosition currentPosition = LinearPosition.ZERO;
 
     public LinearSlideEncoder (LinearOpMode linearOp){
