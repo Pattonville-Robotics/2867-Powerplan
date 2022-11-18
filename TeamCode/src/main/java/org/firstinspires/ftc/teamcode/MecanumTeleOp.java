@@ -13,19 +13,48 @@ import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
+    // Speed of
+    float slideSpeed;
+
     @Override
     public void runOpMode() throws InterruptedException {
         GamepadEx controller1 = new GamepadEx(gamepad1);
-        GamepadEx controller2 = new GamepadEx(gamepad2);
-        final LinearSlideEncoder sEncoder = new LinearSlideEncoder(this);
-        final MecanumEncoder mEncoder = new MecanumEncoder(this);
-        final ClawEncoder cEncoder = new ClawEncoder(this);
+//        GamepadEx controller2 = new GamepadEx(gamepad2);
+
+        final MecanumEncoder driveTrain = new MecanumEncoder(this);
+        final LinearSlideEncoder linearSlide = new LinearSlideEncoder(this);
+        final ClawEncoder claw = new ClawEncoder(this);
+
+        // Set up button readers
+        // Linear slide movement
+//        GamepadButton aButton = new GamepadButton(controller1, GamepadKeys.Button.A);
+//        GamepadButton xButton = new GamepadButton(controller1, GamepadKeys.Button.X);
+//        GamepadButton yButton = new GamepadButton(controller1, GamepadKeys.Button.Y);
+//        GamepadButton bButton = new GamepadButton(controller1, GamepadKeys.Button.B);
+
+//        ButtonReader aButton = new ButtonReader(controller1, GamepadKeys.Button.A);
+//        ButtonReader xButton = new ButtonReader(controller1, GamepadKeys.Button.X);
+//        ButtonReader yButton = new ButtonReader(controller1, GamepadKeys.Button.Y);
+//        ButtonReader bButton = new ButtonReader(controller1, GamepadKeys.Button.B);
+
+        // Claw
+//        GamepadButton leftBumper = new GamepadButton(controller1, GamepadKeys.Button.LEFT_BUMPER);
+//        ButtonReader leftBumper = new ButtonReader(controller1, GamepadKeys.Button.LEFT_BUMPER);
+
+        // Linear slide movement
+//        aButton.whenPressed(() -> linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed));
+//        xButton.whenPressed(() -> linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed));
+//        yButton.whenPressed(() -> linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed));
+//        bButton.whenPressed(() -> linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed));
+
+        // Claw
+//        leftBumper.whenPressed(claw::toggleClaw);
 
         waitForStart();
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            double y = -controller1.getLeftY(); // Remember, this is reversed!
+            double y = controller1.getLeftY();
             double x = controller1.getLeftX() * 1.1; // Counteract imperfect strafing
             double rx = controller1.getRightX();
             /*
@@ -39,36 +68,26 @@ public class MecanumTeleOp extends LinearOpMode {
             double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
-            mEncoder.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
+            driveTrain.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
 
             // Linear slide speed
             float LT = gamepad2.left_trigger;
-            float slideSpeed = (LT == 0) ? 1 : LT;
+            slideSpeed = (LT == 0) ? 0.05f : 0.05f*LT;
 
-            // Linear slide movement
-            ButtonReader a2 = new ButtonReader(controller2, GamepadKeys.Button.A);
-            ButtonReader x2 = new ButtonReader(controller2, GamepadKeys.Button.X);
-            ButtonReader y2 = new ButtonReader(controller2, GamepadKeys.Button.Y);
-            GamepadButton LB = new GamepadButton(controller2, GamepadKeys.Button.LEFT_BUMPER);
+            if (gamepad1.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
+            if (gamepad1.x) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
+            if (gamepad1.y) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
+            if (gamepad1.b) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+            if (gamepad1.left_bumper) claw.openClaw();
+            if (gamepad1.right_bumper) claw.closeClaw();
 
-            if (a2.wasJustPressed()) {
-                sEncoder.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
-            }
-            if (x2.wasJustPressed()) {
-                sEncoder.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
-            }
-            if (y2.wasJustPressed()) {
-                sEncoder.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
-            }
-            if (a2.wasJustPressed() && LB.get()) {  // LB held and A pressed
-                sEncoder.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
-            }
+//            if (aButton.get()) telemetry.addLine("A pressed");
+//            if (xButton.get()) telemetry.addLine("X pressed");
+//            if (yButton.get()) telemetry.addLine("Y pressed");
+//            if (bButton.get()) telemetry.addLine("B pressed");
 
-            // Claw
-            ButtonReader b2 = new ButtonReader(controller2, GamepadKeys.Button.B);
-            if (b2.wasJustPressed()) {
-                cEncoder.toggleClaw();
-            }
+            telemetry.addData("CurrentPosition", linearSlide.currentPosition);
+            telemetry.update();
         }
     }
 }
