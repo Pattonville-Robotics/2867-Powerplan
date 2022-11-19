@@ -122,7 +122,7 @@ public class TensorFlowAuto extends LinearOpMode {
         }
 
         /** Set up encoders **/
-        MecanumEncoder encoder = new MecanumEncoder(this);
+        MecanumEncoder driveTrain = new MecanumEncoder(this);
 
         /** Wait for the game to begin */
         waitForStart();
@@ -139,13 +139,15 @@ public class TensorFlowAuto extends LinearOpMode {
         }
 
         // Move forward in line with the 3 parking locations
-        encoder.moveForward(28, 0.5);
+        driveTrain.moveForward(28, 0.5);
 
         // Check for the most confident tensorflow object's label and move accordingly
         if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("1 Bolt")) {
-            encoder.move(0, -27.5, 0.5);
+            driveTrain.move(0, -27.5, 0.5);
+            driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
         } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("3 Panel")) {
-            encoder.move(0, 27.5, 0.5);
+            driveTrain.move(0, 27.5, 0.5);
+            driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
         } else { // cone should be displaying 2
             // do nothing
         }
