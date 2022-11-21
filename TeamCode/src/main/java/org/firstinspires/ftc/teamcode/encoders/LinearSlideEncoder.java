@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class LinearSlideEncoder {
     LinearOpMode linearOp;
-    DcMotor motor;
+    public DcMotor motor;
     public LinearPosition currentPosition = LinearPosition.ZERO;
 
     public LinearSlideEncoder (LinearOpMode linearOp){
@@ -75,8 +75,11 @@ public class LinearSlideEncoder {
 
     public void analogMoveSlide(float magnitude) {
         // magnitude: direction and speed of movement
-        if (magnitude <= 0.06) { magnitude = 0; } // accounts for drift, turning.
-        motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 10)));
+        if (magnitude > -0.06 && magnitude < 0.06) { magnitude = 0; }   // accounts for drift, accidental activation when turning.
+        if (motor.getCurrentPosition() >= 0 || magnitude > 0) {         // Disallow adding slack when the slide is lowest.
+            motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 10)));
+            motor.setPower(magnitude * 300);
+        }
     }
 
 }
