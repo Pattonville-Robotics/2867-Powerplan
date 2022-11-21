@@ -73,4 +73,10 @@ public class LinearSlideEncoder {
 //        motor.setPower(0);
     }
 
+    public void analogMoveSlide(float magnitude) {
+        // magnitude: direction and speed of movement
+        if (magnitude <= 0.06) { magnitude = 0; } // accounts for drift, turning.
+        motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 10)));
+    }
+
 }

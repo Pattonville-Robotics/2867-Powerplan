@@ -71,7 +71,7 @@ public class MecanumTeleOp extends LinearOpMode {
             driveTrain.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
 
             // Linear slide speed
-            float LT = gamepad2.left_trigger;
+            float LT = gamepad1.left_trigger;
             slideSpeed = (LT == 0) ? 0.05f : 0.05f*LT;
 
             // Linear slide
@@ -84,6 +84,9 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad1.dpad_left) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE2, slideSpeed);
             if (gamepad1.dpad_up) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE3, slideSpeed);
             if (gamepad1.dpad_right) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+
+            linearSlide.analogMoveSlide(gamepad1.right_stick_y);
+
 
             // Claw
             if (gamepad1.left_bumper) claw.openClaw();
