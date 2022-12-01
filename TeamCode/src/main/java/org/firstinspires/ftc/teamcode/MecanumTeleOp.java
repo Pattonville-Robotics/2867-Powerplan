@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.arcrobotics.ftclib.command.button.GamepadButton;
-import com.arcrobotics.ftclib.gamepad.ButtonReader;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -85,9 +82,8 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad1.dpad_up) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE3, slideSpeed);
             if (gamepad1.dpad_right) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
 
-            linearSlide.analogMoveSlide(-gamepad1.right_stick_y);
-            String tempDebug = String.valueOf(linearSlide.motor.getCurrentPosition());
-            telemetry.addLine("slide position: " + tempDebug);
+            // to account for drift (don't raise when just turning) and potential conflict w/ the specific positions above
+            if (Math.abs(gamepad1.right_stick_y) > 0.1) linearSlide.analogMoveSlide(-gamepad1.right_stick_y);
 
             // Claw
             if (gamepad1.left_bumper) claw.openClaw();

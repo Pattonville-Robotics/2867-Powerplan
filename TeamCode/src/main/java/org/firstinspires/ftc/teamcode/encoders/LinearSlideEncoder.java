@@ -75,7 +75,6 @@ public class LinearSlideEncoder {
 
     public void analogMoveSlide(float magnitude) {
         // magnitude: direction and speed of movement
-        if (magnitude > -0.06 && magnitude < 0.06) { magnitude = 0; }   // accounts for drift, accidental activation when turning.
         if (motor.getCurrentPosition() >= 0 || magnitude > 0) {         // Disallow adding slack when the slide is lowest.
             motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 20)));
             motor.setPower(magnitude);
