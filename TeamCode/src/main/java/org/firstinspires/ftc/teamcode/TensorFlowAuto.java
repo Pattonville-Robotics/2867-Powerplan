@@ -62,13 +62,13 @@ public class TensorFlowAuto extends LinearOpMode {
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomTeamModel.tflite";
+    // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomSleeve.tflite";
 
 
     private static final String[] LABELS = {
-            "1 Bolt",
-            "2 Bulb",
-            "3 Panel"
+            "Apple",
+            "Pete",
+            "Eagle"
     };
 
     /*
@@ -142,10 +142,10 @@ public class TensorFlowAuto extends LinearOpMode {
         driveTrain.moveForward(28, 0.5);
 
         // Check for the most confident tensorflow object's label and move accordingly
-        if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("1 Bolt")) {
+        if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Apple")) {
             driveTrain.move(0, -27.5, 0.5);
             driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
-        } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("3 Panel")) {
+        } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Pete")) {
             driveTrain.move(0, 27.5, 0.5);
             driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
         } else { // cone should be displaying 2
