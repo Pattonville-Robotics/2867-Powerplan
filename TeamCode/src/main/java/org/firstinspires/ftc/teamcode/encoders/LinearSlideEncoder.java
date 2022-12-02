@@ -77,7 +77,7 @@ public class LinearSlideEncoder {
         // TODO: add an upper limit for movement to avoid over-tightening
         // magnitude: direction and speed of movement
         if (motor.getCurrentPosition() >= 0 || magnitude > 0) { // Disallow adding slack when the slide is lowest.
-            motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 20)));
+            motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 80)));
             motor.setPower(magnitude);
         }
     }
