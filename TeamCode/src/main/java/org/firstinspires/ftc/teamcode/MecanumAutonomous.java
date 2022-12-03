@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 @Autonomous
+@Disabled
 public class MecanumAutonomous extends LinearOpMode {
 
     @Override
