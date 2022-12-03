@@ -16,7 +16,7 @@ public class MecanumTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         GamepadEx controller1 = new GamepadEx(gamepad1);
-//        GamepadEx controller2 = new GamepadEx(gamepad2);
+        GamepadEx controller2 = new GamepadEx(gamepad2);
 
         final MecanumEncoder driveTrain = new MecanumEncoder(this);
         final LinearSlideEncoder linearSlide = new LinearSlideEncoder(this);
@@ -72,29 +72,34 @@ public class MecanumTeleOp extends LinearOpMode {
             slideSpeed = LT == 0 ? 0.05f : 0.05f*LT;
 
             // Linear slide
-            if (gamepad1.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
-            if (gamepad1.x) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
-            if (gamepad1.y) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
-            if (gamepad1.b) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+            if (gamepad2.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
+            if (gamepad2.x) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
+            if (gamepad2.y) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
+            if (gamepad2.b) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
 
-            if (gamepad1.dpad_down) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, slideSpeed);
-            if (gamepad1.dpad_left) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE2, slideSpeed);
-            if (gamepad1.dpad_up) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE3, slideSpeed);
-            if (gamepad1.dpad_right) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+            if (gamepad2.dpad_down) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, slideSpeed);
+            if (gamepad2.dpad_left) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE2, slideSpeed);
+            if (gamepad2.dpad_up) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE3, slideSpeed);
+            if (gamepad2.dpad_right) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+
+            if (gamepad2.a) {
+                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+                claw.openClaw();
+            }
 
             // to account for drift (don't raise when just turning) and potential conflict w/ the specific positions above
-            if (Math.abs(gamepad1.right_stick_y) > 0.1) linearSlide.analogMoveSlide(-gamepad1.right_stick_y);
+            if (Math.abs(gamepad2.right_stick_y) > 0.1) linearSlide.analogMoveSlide(-gamepad2.right_stick_y);
 
             // Claw
-            if (gamepad1.left_bumper) claw.openClaw();
-            if (gamepad1.right_bumper) claw.closeClaw();
+            if (gamepad2.left_bumper) claw.openClaw();
+            if (gamepad2.right_bumper) claw.closeClaw();
 
 //            if (aButton.get()) telemetry.addLine("A pressed");
 //            if (xButton.get()) telemetry.addLine("X pressed");
 //            if (yButton.get()) telemetry.addLine("Y pressed");
 //            if (bButton.get()) telemetry.addLine("B pressed");
 
-            telemetry.addData("CurrentPosition", linearSlide.currentPosition);
+            telemetry.addData("CurrentLsPosition", linearSlide.currentPosition);
             telemetry.update();
         }
     }
