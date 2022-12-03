@@ -69,7 +69,7 @@ public class MecanumTeleOp extends LinearOpMode {
 
             // Linear slide speed
             float LT = gamepad1.left_trigger;
-            slideSpeed = LT == 0 ? 0.05f : 0.05f*LT;
+            slideSpeed = LT == 0 ? 0.1f : 0.1f*LT;
 
             // Linear slide
             if (gamepad2.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
