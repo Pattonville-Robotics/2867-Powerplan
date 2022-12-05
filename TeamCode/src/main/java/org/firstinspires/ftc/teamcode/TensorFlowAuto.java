@@ -137,11 +137,11 @@ public class TensorFlowAuto extends LinearOpMode {
                 mostConfidentRecognition = recognition;
             }
         }
-        // -- PUSHING CONE INTO TERMINAL--
+        // -- PUSHING CONE INTO TERMINAL --
         // assuming pre-loaded cone is placed on right side of robot
         // move slightly over 1 tile than go back to ensure cone is well within terminal
-        driveTrain.move(0, 30, 0.5);
-        driveTrain.move(0, -2.5, 0.5);
+        driveTrain.move(0, -28.5, 0.5);
+        driveTrain.move(0, 1, 0.5);
 
         // -- PARKING --
         // Move forward in line with the 3 parking locations
@@ -151,12 +151,12 @@ public class TensorFlowAuto extends LinearOpMode {
         if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Pete")) {
 //            driveTrain.move(0, -27.5, 0.5);
             // do nothing, should already be in place
-            driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
         } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Eagle")) {
             driveTrain.move(0, 27.5*2, 0.5);
             driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
         } else { // cone should be displaying 2 (Apple)
             driveTrain.move(0, 27.5, 0.5);
+            driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
         }
     }
 
