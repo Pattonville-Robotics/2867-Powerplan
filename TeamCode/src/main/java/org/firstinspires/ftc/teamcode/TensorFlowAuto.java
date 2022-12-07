@@ -66,9 +66,9 @@ public class TensorFlowAuto extends LinearOpMode {
 
 
     private static final String[] LABELS = {
-            "Pete",
-            "Apple",
-            "Eagle"
+            "Pete", // label 1
+            "Apple", // label 2
+            "Eagle" // label 3
     };
 
     /*
@@ -140,8 +140,8 @@ public class TensorFlowAuto extends LinearOpMode {
         // -- PUSHING CONE INTO TERMINAL --
         // assuming pre-loaded cone is placed on right side of robot
         // move slightly over 1 tile than go back to ensure cone is well within terminal
-        driveTrain.move(0, -28.5, 0.5);
-        driveTrain.move(0, 1, 0.5);
+//        driveTrain.move(0, -28.5, 0.5);
+//        driveTrain.move(0, 1, 0.5);
 
         // -- PARKING --
         // Move forward in line with the 3 parking locations
@@ -149,14 +149,12 @@ public class TensorFlowAuto extends LinearOpMode {
 
         // Check for the most confident tensorflow object's label and move accordingly
         if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Pete")) {
-//            driveTrain.move(0, -27.5, 0.5);
-            // do nothing, should already be in place
+            driveTrain.move(0, -27.5, 0.5);
         } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Eagle")) {
-            driveTrain.move(0, 27.5*2, 0.5);
-            driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
-        } else { // cone should be displaying 2 (Apple)
             driveTrain.move(0, 27.5, 0.5);
             driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
+        } else { // cone should be displaying 2 (Apple)
+            // do nothing
         }
     }
 

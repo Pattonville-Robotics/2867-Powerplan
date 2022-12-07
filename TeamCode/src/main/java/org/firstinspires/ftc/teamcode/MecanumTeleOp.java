@@ -82,10 +82,10 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.dpad_up) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE3, slideSpeed);
             if (gamepad2.dpad_right) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
 
-            if (gamepad2.a) {
-                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
-                claw.openClaw();
-            }
+//            if (gamepad2.a) {
+//                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+//                claw.openClaw();
+//            }
 
             // to account for drift (don't raise when just turning) and potential conflict w/ the specific positions above
             if (Math.abs(gamepad2.right_stick_y) > 0.1) linearSlide.analogMoveSlide(-gamepad2.right_stick_y);
