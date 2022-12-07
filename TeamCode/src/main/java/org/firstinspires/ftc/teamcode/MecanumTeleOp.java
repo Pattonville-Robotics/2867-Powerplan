@@ -66,7 +66,6 @@ public class MecanumTeleOp extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
             driveTrain.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
-
             // Linear slide speed
             float LT = gamepad1.left_trigger;
             slideSpeed = LT == 0 ? 0.1f : 0.1f*LT;
