@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 public class MecanumTeleOp extends LinearOpMode {
     // Speed of
     float slideSpeed;
+    final double changeConst = 0.0009;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -26,7 +27,7 @@ public class MecanumTeleOp extends LinearOpMode {
         // Linear slide movement
 //        GamepadButton aButton = new GamepadButton(controller1, GamepadKeys.Button.A);
 //        GamepadButton xButton = new GamepadButton(controller1, GamepadKeys.Button.X);
-//        GamepadButton yButton = new GamepadButton(controller1, GamepadKeys.Button.Y);
+//        GamepadButton yButtonnn,,./. n  = new GamepadButton(controller1, GamepadKeys.Button.Y);
 //        GamepadButton bButton = new GamepadButton(controller1, GamepadKeys.Button.B);
 
 //        ButtonReader aButton = new ButtonReader(controller1, GamepadKeys.Button.A);
@@ -90,8 +91,9 @@ public class MecanumTeleOp extends LinearOpMode {
             if (Math.abs(gamepad2.right_stick_y) > 0.1) linearSlide.analogMoveSlide(-gamepad2.right_stick_y);
 
             // Claw
-            if (gamepad2.left_bumper) claw.openClaw();
-            if (gamepad2.right_bumper) claw.closeClaw();
+
+            if (gamepad2.left_bumper) claw.changeClaw(changeConst);
+            if (gamepad2.right_bumper) claw.changeClaw(-changeConst);
 
 //            if (aButton.get()) telemetry.addLine("A pressed");
 //            if (xButton.get()) telemetry.addLine("X pressed");

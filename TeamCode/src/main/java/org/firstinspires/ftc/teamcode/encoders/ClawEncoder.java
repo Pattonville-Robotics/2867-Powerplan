@@ -10,11 +10,11 @@ public class ClawEncoder {
     public ClawEncoder(LinearOpMode linearOp) {
         HardwareMap hardwareMap = linearOp.hardwareMap;
         claw = hardwareMap.servo.get("claw");
-        claw.setPosition(0);
+        claw.setPosition(0.2);
     }
 
     public void openClaw() {
-        claw.setPosition(1);
+        claw.setPosition(0.5);
         isOpen = true;
     }
 
@@ -22,4 +22,15 @@ public class ClawEncoder {
         claw.setPosition(0);
         isOpen = false;
     }
+
+    public void changeClaw(double change) {
+        // dont break the servo
+//        if ((! (claw.getPosition() > 0.9) && change > 0) && ( ! (claw.getPosition() < 0.1) && change < 0)) {
+            claw.setPosition(claw.getPosition() + change);
+
+//        }
+
+
+    }
 }
+
