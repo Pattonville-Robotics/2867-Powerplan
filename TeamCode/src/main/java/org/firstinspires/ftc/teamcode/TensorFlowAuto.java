@@ -149,10 +149,12 @@ public class TensorFlowAuto extends LinearOpMode {
 
         // Check for the most confident tensorflow object's label and move accordingly
         if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Pete")) {
-            driveTrain.move(0, -27.5, 0.5);
+            driveTrain.rotateDegrees(false, 90, 0.5);
+            driveTrain.moveForward(27.5, 0.5);
         } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Eagle")) {
-            driveTrain.move(0, 27.5, 0.5);
-            driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
+            driveTrain.rotateDegrees(true, 90, 0.5);
+            driveTrain.moveForward(27.5, 0.5);
+//            driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
         } else { // cone should be displaying 2 (Apple)
             // do nothing
         }
