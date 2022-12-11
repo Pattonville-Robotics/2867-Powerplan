@@ -52,8 +52,8 @@ public class MecanumTeleOp extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            double y = controller1.getLeftY();
-            double x = controller1.getLeftX() * 1.1; // Counteract imperfect strafing
+            double y = controller1.getLeftY() * Math.abs(controller1.getLeftY());
+            double x = controller1.getLeftX() * 1.1 * Math.abs(controller1.getLeftX() * 1.1); // Counteract imperfect strafing
             double rx = controller1.getRightX();
             /*
             Denominator is the largest motor power (absolute value) or 1

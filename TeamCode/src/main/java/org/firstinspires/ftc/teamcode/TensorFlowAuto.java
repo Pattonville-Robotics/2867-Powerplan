@@ -61,7 +61,8 @@ public class TensorFlowAuto extends LinearOpMode {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
-    private static final String TFOD_MODEL_ASSET = "FtcRobotController/src/main/assets/CustomSleeve.tflite";
+    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+
     // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomSleeve.tflite";
 
 
@@ -150,10 +151,10 @@ public class TensorFlowAuto extends LinearOpMode {
         // Check for the most confident tensorflow object's label and move accordingly
         if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Pete")) {
             driveTrain.rotateDegrees(false, 90, 0.5);
-            driveTrain.moveForward(27.5, 0.5);
+            driveTrain.moveForward(23.5, 0.5);
         } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Eagle")) {
             driveTrain.rotateDegrees(true, 90, 0.5);
-            driveTrain.moveForward(27.5, 0.5);
+            driveTrain.moveForward(23.5, 0.5);
 //            driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
         } else { // cone should be displaying 2 (Apple)
             // do nothing

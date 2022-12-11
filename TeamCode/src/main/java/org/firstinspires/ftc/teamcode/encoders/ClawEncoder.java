@@ -25,10 +25,11 @@ public class ClawEncoder {
 
     public void changeClaw(double change) {
         // dont break the servo
-//        if ((! (claw.getPosition() > 0.9) && change > 0) && ( ! (claw.getPosition() < 0.1) && change < 0)) {
-            claw.setPosition(claw.getPosition() + change);
+        if (change > 0 && claw.getPosition() >= 0.95) { return; }
+        if (change < 0 && claw.getPosition() <= 0.05) { return; }
+        claw.setPosition(claw.getPosition() + change);
 
-//        }
+
 
 
     }
