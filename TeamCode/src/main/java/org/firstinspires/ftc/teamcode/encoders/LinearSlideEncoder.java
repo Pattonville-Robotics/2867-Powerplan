@@ -76,9 +76,8 @@ public class LinearSlideEncoder {
     public void analogMoveSlide(float magnitude) {
         // magnitude: direction and speed of movement                        vvv max height of the slide, in ticks
         if (motor.getCurrentPosition() >= 0 || motor.getCurrentPosition() <= 2200 || magnitude > 0) { // Disallow adding slack when the slide is lowest.
-            if (magnitude < 0) {
-                magnitude *= 0.7;
-            }
+            // cap downward speed
+            magnitude = (float) Math.max(magnitude, -0.3);
             motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 120)));
             motor.setPower(magnitude);
 
