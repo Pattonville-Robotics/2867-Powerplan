@@ -101,6 +101,7 @@ public class MecanumTeleOp extends LinearOpMode {
 //            if (bButton.get()) telemetry.addLine("B pressed");
 
             telemetry.addData("CurrentLsPosition", linearSlide.currentPosition);
+            telemetry.addData("CurrentServoPosition", claw.getPosition());
             telemetry.update();
         }
     }

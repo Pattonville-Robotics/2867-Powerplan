@@ -10,6 +10,7 @@ public class ClawEncoder {
     public ClawEncoder(LinearOpMode linearOp) {
         HardwareMap hardwareMap = linearOp.hardwareMap;
         claw = hardwareMap.servo.get("claw");
+        // needs to go to position on start for getPositon to be accurate
         claw.setPosition(0.2);
     }
 
@@ -21,6 +22,10 @@ public class ClawEncoder {
     public void closeClaw() {
         claw.setPosition(0);
         isOpen = false;
+    }
+
+    public double getPosition() {
+        return (claw.getPosition());
     }
 
     public void changeClaw(double change) {
