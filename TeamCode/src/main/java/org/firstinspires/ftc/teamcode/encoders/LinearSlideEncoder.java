@@ -13,12 +13,12 @@ public class LinearSlideEncoder {
     public LinearSlideEncoder (LinearOpMode linearOp){
         this.linearOp = linearOp;
         HardwareMap hardwareMap = linearOp.hardwareMap;
-        motor = hardwareMap.dcMotor.get("motorLinearSlide"); // not sure what the id is
+        motor = hardwareMap.dcMotor.get("motorLinearSlide");
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setTargetPosition(0);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-
+    // TODO: hone specific heights, especially cone heights.
     public enum LinearPosition {
         ZERO(0),
         ONE(1000),
@@ -34,7 +34,7 @@ public class LinearSlideEncoder {
 //    public float getHeight(){
 //        return (height);
 //    }
-//
+
 //    public void changeHeight(float inches, float speed) throws InterruptedException {
 //        float time = 0.5f * Math.abs(inches) * (1/speed);
 //
@@ -74,9 +74,10 @@ public class LinearSlideEncoder {
     }
 
     public void analogMoveSlide(float magnitude) {
-        // magnitude: direction and speed of movement                        vvv max height of the slide, in ticks
-        if (motor.getCurrentPosition() >= 0 || motor.getCurrentPosition() <= 2200 || magnitude > 0) { // Disallow adding slack when the slide is lowest.
-            // cap downward speed
+        // TODO: increase maximum height for new (yet to be fixed) slide configuration.
+        // magnitude: direction and speed of movement                                         vvv max height of the slide, in ticks
+        if (motor.getCurrentPosition() >= 100 && magnitude < 0 || motor.getCurrentPosition() <= 2200 &&  magnitude > 0) { // Disallow adding slack when the slide is lowest
+            // cap downward speed                                                                                            and over-tightening when at its highest.
             magnitude = (float) Math.max(magnitude, -0.3);
             motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 120)));
             motor.setPower(magnitude);
