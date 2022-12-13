@@ -69,18 +69,24 @@ public class MecanumTeleOp extends LinearOpMode {
             driveTrain.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
             // Linear slide speed
             float LT = gamepad1.left_trigger;
-            slideSpeed = LT == 0 ? 0.1f : 0.1f*LT;
+            slideSpeed = LT == 0 ? 0.2f : 0.2f*LT;
 
             // Linear slide
             if (gamepad2.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
             if (gamepad2.x) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
             if (gamepad2.y) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
-            if (gamepad2.b) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+            if (gamepad2.b) {
+                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+                claw.openClaw();
+            }
 
             if (gamepad2.dpad_down) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, slideSpeed);
             if (gamepad2.dpad_left) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE2, slideSpeed);
             if (gamepad2.dpad_up) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE3, slideSpeed);
-            if (gamepad2.dpad_right) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+            if (gamepad2.dpad_right) {
+                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+                claw.openClaw();
+            }
 
 //            if (gamepad2.a) {
 //                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
@@ -92,8 +98,8 @@ public class MecanumTeleOp extends LinearOpMode {
 
             // Claw
 
-            if (gamepad2.left_bumper) claw.changeClaw(changeConst);
-            if (gamepad2.right_bumper) claw.changeClaw(-changeConst);
+            if (gamepad2.left_bumper) claw.openClaw();
+            if (gamepad2.right_bumper) claw.closeClaw();
 
 //            if (aButton.get()) telemetry.addLine("A pressed");
 //            if (xButton.get()) telemetry.addLine("X pressed");
