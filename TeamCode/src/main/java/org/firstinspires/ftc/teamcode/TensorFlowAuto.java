@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.apache.commons.math3.analysis.integration.LegendreGaussIntegrator;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -39,6 +40,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
+import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder.LinearPosition;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 import java.util.List;
@@ -145,7 +147,7 @@ public class TensorFlowAuto extends LinearOpMode {
         // -- SCORING PRE-LOADED CONE --
         // The pre-loaded cone is assumed to be under the claw at the start.
         claw.openClaw();
-        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, 0.5);
+        linearSlide.setHeight(LinearPosition.TWO, 0.5);
 
         // drive to and face pole
         driveTrain.moveForward(28, 0.5);
