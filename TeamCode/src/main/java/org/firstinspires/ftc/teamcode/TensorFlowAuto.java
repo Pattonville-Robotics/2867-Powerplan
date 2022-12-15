@@ -37,6 +37,8 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
+import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 import java.util.List;
@@ -124,6 +126,8 @@ public class TensorFlowAuto extends LinearOpMode {
 
         /** Set up encoders **/
         MecanumEncoder driveTrain = new MecanumEncoder(this);
+        final ClawEncoder claw = new ClawEncoder(this);
+        final LinearSlideEncoder linearSlide = new LinearSlideEncoder(this);
 
         /** Wait for the game to begin */
         waitForStart();
@@ -138,15 +142,23 @@ public class TensorFlowAuto extends LinearOpMode {
                 mostConfidentRecognition = recognition;
             }
         }
-        // -- PUSHING CONE INTO TERMINAL --
-        // assuming pre-loaded cone is placed on right side of robot
-        // move slightly over 1 tile than go back to ensure cone is well within terminal
-//        driveTrain.move(0, -28.5, 0.5);
-//        driveTrain.move(0, 1, 0.5);
+        // -- SCORING PRE-LOADED CONE --
+        // The pre-loaded cone is assumed to be under the claw at the start.
+        claw.openClaw();
+        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, 0.5);
+
+        // drive to and face pole
+        driveTrain.moveForward(28, 0.5);
+        driveTrain.rotateDegrees(true,45,0.5);
+        driveTrain.moveForward(10, 0.5);
+
+        claw.closeClaw();
+        driveTrain.moveForward(-10);
+        driveTrain.rotateDegrees(false, 45, 0.5);
 
         // -- PARKING --
-        // Move forward in line with the 3 parking locations
-        driveTrain.moveForward(28, 0.5);
+        // Move forward in line with the 3 parking locations (NOT ANYMORE; SHOULD BE IN POSITION ALREADY)
+//        driveTrain.moveForward(28, 0.5);
 
         // Check for the most confident tensorflow object's label and move accordingly
         if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Pete")) {
