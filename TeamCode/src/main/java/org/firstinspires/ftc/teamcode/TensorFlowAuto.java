@@ -65,10 +65,9 @@ public class TensorFlowAuto extends LinearOpMode {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
-    private static final String TFOD_MODEL_ASSET = "CustomSleeveV2.tflite";
+    private static final String TFOD_MODEL_ASSET = "CustomSleeveV3.tflite";
 
     // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomSleeve.tflite";
-
 
     private static final String[] LABELS = {
             "Pete", // label 1
@@ -147,28 +146,28 @@ public class TensorFlowAuto extends LinearOpMode {
         // -- SCORING PRE-LOADED CONE --
         // The pre-loaded cone is assumed to be under the claw at the start.
         claw.openClaw();
-        linearSlide.setHeight(LinearPosition.TWO, 0.5);
+        linearSlide.setHeight(LinearPosition.THREE, 0.3);
 
         // drive to and face pole
-        driveTrain.moveForward(28, 0.5);
+        driveTrain.moveForward(28 * 2, 0.5);
         driveTrain.rotateDegrees(true,45,0.5);
-        driveTrain.moveForward(10, 0.5);
-
+        driveTrain.moveForward(3, 0.3);
         claw.closeClaw();
         driveTrain.moveForward(-10);
-        driveTrain.rotateDegrees(false, 45, 0.5);
+        driveTrain.rotateDegrees(true, 45, 0.5);
+        linearSlide.setHeight(LinearPosition.ZERO, 0.5);
 
         // -- PARKING --
-        // Move forward in line with the 3 parking locations (NOT ANYMORE; SHOULD BE IN POSITION ALREADY)
-//        driveTrain.moveForward(28, 0.5);
+        // Move backward in line with the 3 parking locations
+//        driveTrain.moveForward(-28, 0.3);
 
         // Check for the most confident tensorflow object's label and move accordingly
         if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Pete")) {
             driveTrain.rotateDegrees(false, 90, 0.5);
-            driveTrain.moveForward(23.5, 0.5);
+//            driveTrain.moveForward(23.5, 0.5);
         } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Eagle")) {
             driveTrain.rotateDegrees(true, 90, 0.5);
-            driveTrain.moveForward(23.5, 0.5);
+//            driveTrain.moveForward(23.5, 0.5);
 //            driveTrain.moveForward(2, 0.2); // move forward a lil in case of drift
         } else { // cone should be displaying 2 (Apple)
             // do nothing

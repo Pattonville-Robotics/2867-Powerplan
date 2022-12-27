@@ -69,7 +69,7 @@ public class MecanumTeleOp extends LinearOpMode {
             driveTrain.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
             // Linear slide speed
             float LT = gamepad1.left_trigger;
-            slideSpeed = LT == 0 ? 0.2f : 0.2f*LT;
+            slideSpeed = LT == 0 ? 0.3f : 0.3f*LT;
 
             // Linear slide
             if (gamepad2.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
@@ -77,7 +77,7 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.y) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
             if (gamepad2.b) {
                 linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
-                claw.openClaw();
+//                claw.openClaw();
             }
 
             if (gamepad2.dpad_down) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, slideSpeed);
@@ -85,7 +85,7 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.dpad_up) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE3, slideSpeed);
             if (gamepad2.dpad_right) {
                 linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
-                claw.openClaw();
+//                claw.openClaw();
             }
 
 //            if (gamepad2.a) {
@@ -94,7 +94,9 @@ public class MecanumTeleOp extends LinearOpMode {
 //            }
 
             // to account for drift (don't raise when just turning) and potential conflict w/ the specific positions above
-            if (Math.abs(gamepad2.right_stick_y) > 0.1) linearSlide.analogMoveSlide(-gamepad2.right_stick_y);
+            if (Math.abs(gamepad2.right_stick_y) > 0.1){
+                linearSlide.analogMoveSlide(-gamepad2.right_stick_y);
+            }
 
             // Claw
 
@@ -106,8 +108,9 @@ public class MecanumTeleOp extends LinearOpMode {
 //            if (yButton.get()) telemetry.addLine("Y pressed");
 //            if (bButton.get()) telemetry.addLine("B pressed");
 
-            telemetry.addData("CurrentLsPosition", linearSlide.currentPosition);
             telemetry.addData("CurrentServoPosition", claw.getPosition());
+            telemetry.addData("CurrentLsPosition", linearSlide.analogPos);
+
             telemetry.update();
         }
     }

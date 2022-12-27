@@ -5,10 +5,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 //import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Line;
+
 public class LinearSlideEncoder {
     LinearOpMode linearOp;
     public DcMotor motor;
     public LinearPosition currentPosition = LinearPosition.ZERO;
+    public float analogPos;
 
     public LinearSlideEncoder (LinearOpMode linearOp){
         this.linearOp = linearOp;
@@ -21,10 +24,10 @@ public class LinearSlideEncoder {
     // TODO: hone specific heights, especially cone heights.
     public enum LinearPosition {
         ZERO(0),
-        ONE(1000),
-        TWO(1600),
-        THREE(2200),
-        CONE1(60),
+        ONE(1400),
+        TWO(2200),
+        THREE(3200),
+        CONE1(300),
         CONE2(120),
         CONE3(180);
         private final int ticks;
@@ -53,10 +56,20 @@ public class LinearSlideEncoder {
 //    }
 
     public void setHeight(LinearPosition pos, double power) {
+        double speedMult;
 //        motorLinearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        motorLinearSlide.setPower(power);
 //        motorLinearSlide.setTargetPosition(pos.ticks);
 //        motorLinearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+//        if ((pos - currentPosition) > 0){
+//            speedMult = 0.3;
+//        }
+//        else{ speedMult = 1;}
+
+        motor.setPower(power);
+
+//        motor.setPower(power * speedMult);
 
         currentPosition = pos;
 //        if (motor.getMode() != DcMotor.RunMode.RUN_TO_POSITION){
@@ -65,7 +78,7 @@ public class LinearSlideEncoder {
 //        }
         motor.setTargetPosition(pos.ticks);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(power);
+
 
 //        while (motor.isBusy()){
 //            Thread.yield(); // lets the rest of teleop run, i think
@@ -76,11 +89,12 @@ public class LinearSlideEncoder {
     public void analogMoveSlide(float magnitude) {
         // TODO: increase maximum height for new (yet to be fixed) slide configuration.
         // magnitude: direction and speed of movement                                         vvv max height of the slide, in ticks
-        if (motor.getCurrentPosition() >= 100 && magnitude < 0 || motor.getCurrentPosition() <= 2200 &&  magnitude > 0) { // Disallow adding slack when the slide is lowest
+        if (motor.getCurrentPosition() >= 100 && magnitude < 0 || motor.getCurrentPosition() <= 4000 &&  magnitude > 0) { // Disallow adding slack when the slide is lowest
             // cap downward speed                                                                                            and over-tightening when at its highest.
-            magnitude = (float) Math.max(magnitude, -0.3);
-            motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 120)));
+            magnitude = (float) Math.max(magnitude, -0.5);
+            motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 180)));
             motor.setPower(magnitude);
+            analogPos = motor.getCurrentPosition();
 
         }
     }
