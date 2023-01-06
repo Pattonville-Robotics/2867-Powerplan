@@ -65,7 +65,10 @@ public class TensorFlowAuto extends LinearOpMode {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
-    private static final String TFOD_MODEL_ASSET = "CustomSleeveV3.tflite";
+    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+    // before comp. make a copy with leftSided inverted. Then we are free to start on any side
+    private static boolean rightSided = false;
+    int side;
 
     // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomSleeve.tflite";
 
@@ -133,6 +136,14 @@ public class TensorFlowAuto extends LinearOpMode {
         /** Wait for the game to begin */
         waitForStart();
 
+        // if strafing is dependant on start side
+        if (rightSided){
+            side = -1;
+        }
+        else{
+            side = 1;
+        }
+
         // Get the current list of all recognitions ad the time play is pressed.
         List<Recognition> recognitions = tfod.getRecognitions();
 
@@ -146,16 +157,23 @@ public class TensorFlowAuto extends LinearOpMode {
         // -- SCORING PRE-LOADED CONE --
         // The pre-loaded cone is assumed to be under the claw at the start.
         claw.openClaw();
-        linearSlide.setHeight(LinearPosition.THREE, 0.3);
+        sleep(500);
+        linearSlide.setHeight(LinearPosition.TWO, 0.3);
 
-        // drive to and face pole
-        driveTrain.moveForward(28 * 2, 0.5);
-        driveTrain.rotateDegrees(true,45,0.5);
-        driveTrain.moveForward(3, 0.3);
+        // drive to and face tall pole depending on start side
+        driveTrain.moveForward(27.25 * 1, 0.5);
+        driveTrain.rotateDegrees((!rightSided),45,0.5);
+        driveTrain.moveForward(6, 0.3);
+        sleep(500);
         claw.closeClaw();
-        driveTrain.moveForward(-10);
-        driveTrain.rotateDegrees(true, 45, 0.5);
+        sleep(500);
+        driveTrain.moveForward(-6, 0.3);
+        driveTrain.rotateDegrees((!rightSided), 45, 0.5);
         linearSlide.setHeight(LinearPosition.ZERO, 0.5);
+
+        // -- GET CONE FROM CONE STACK -
+//        driveTrain.rotateDegrees(rightSided, 90, 0.5);
+//        driveTrain.moveForward(10);
 
         // -- PARKING --
         // Move backward in line with the 3 parking locations

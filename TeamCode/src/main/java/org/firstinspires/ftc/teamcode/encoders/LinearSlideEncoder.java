@@ -25,7 +25,7 @@ public class LinearSlideEncoder {
     public enum LinearPosition {
         ZERO(0),
         ONE(1400),
-        TWO(2200),
+        TWO(2300),
         THREE(3200),
         CONE1(300),
         CONE2(120),
@@ -89,13 +89,19 @@ public class LinearSlideEncoder {
     public void analogMoveSlide(float magnitude) {
         // TODO: increase maximum height for new (yet to be fixed) slide configuration.
         // magnitude: direction and speed of movement                                         vvv max height of the slide, in ticks
-        if (motor.getCurrentPosition() >= 100 && magnitude < 0 || motor.getCurrentPosition() <= 4000 &&  magnitude > 0) { // Disallow adding slack when the slide is lowest
+//        if (motor.getCurrentPosition() >= 100 && magnitude < 0 || motor.getCurrentPosition() <= 4000 &&  magnitude > 0) { // Disallow adding slack when the slide is lowest
             // cap downward speed                                                                                            and over-tightening when at its highest.
             magnitude = (float) Math.max(magnitude, -0.5);
             motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 180)));
             motor.setPower(magnitude);
             analogPos = motor.getCurrentPosition();
 
-        }
+//        }
+    }
+
+    public void reset() {
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setTargetPosition(0);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }

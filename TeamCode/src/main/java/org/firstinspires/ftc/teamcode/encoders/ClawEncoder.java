@@ -15,12 +15,12 @@ public class ClawEncoder {
     }
 
     public void openClaw() {
-        claw.setPosition(0.3);
+        claw.setPosition(0.35);
         isOpen = true;
     }
 
     public void closeClaw() {
-        claw.setPosition(0.2);
+        claw.setPosition(0.23);
         isOpen = false;
     }
 

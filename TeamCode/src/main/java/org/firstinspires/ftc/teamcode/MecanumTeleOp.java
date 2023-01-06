@@ -76,7 +76,7 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.x) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
             if (gamepad2.y) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
             if (gamepad2.b) {
-                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
+                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed*0.5);
 //                claw.openClaw();
             }
 
@@ -86,6 +86,10 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.dpad_right) {
                 linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
 //                claw.openClaw();
+            }
+
+            if (gamepad2.back){
+                linearSlide.reset();
             }
 
 //            if (gamepad2.a) {
