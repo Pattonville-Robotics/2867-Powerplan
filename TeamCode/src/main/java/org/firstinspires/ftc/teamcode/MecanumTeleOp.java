@@ -22,6 +22,8 @@ public class MecanumTeleOp extends LinearOpMode {
         final MecanumEncoder driveTrain = new MecanumEncoder(this);
         final LinearSlideEncoder linearSlide = new LinearSlideEncoder(this);
         final ClawEncoder claw = new ClawEncoder(this);
+        double x;
+        double xDriftLimit = 0.1;
 
         // Set up button readers
         // Linear slide movement
@@ -53,7 +55,12 @@ public class MecanumTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
             double y = controller1.getLeftY() * Math.abs(controller1.getLeftY());
-            double x = controller1.getLeftX() * 1.1 * Math.abs(controller1.getLeftX() * 1.1); // Counteract imperfect strafing
+            if (Math.abs(controller1.getLeftX()) > xDriftLimit){
+                x = controller1.getLeftX() * 1.1 * Math.abs(controller1.getLeftX() * 1.1); // Counteract imperfect strafing
+            }
+            else{
+                x = 0f;
+            }
             double rx = controller1.getRightX();
             /*
             Denominator is the largest motor power (absolute value) or 1
