@@ -156,24 +156,20 @@ public class TensorFlowAuto extends LinearOpMode {
         }
         // -- SCORING PRE-LOADED CONE --
         // The pre-loaded cone is assumed to be under the claw at the start.
-//        claw.openClaw();
-//        sleep(500);
-//        linearSlide.setHeight(LinearPosition.TWO, 0.3);
-//
-//        // drive to and face tall pole depending on start side
-//        driveTrain.moveForward(27.25 * 1, 0.5);
-//        driveTrain.rotateDegrees((!rightSided),45,0.5);
-//        driveTrain.moveForward(3, 0.3);
-//        sleep(500);
-//        claw.closeClaw();
-//        sleep(500);
-//        driveTrain.moveForward(-3, 0.3);
-//        driveTrain.rotateDegrees((!rightSided), 45, 0.5);
-//        linearSlide.setHeight(LinearPosition.ZERO, 0.5);
+        claw.openClaw();
+        sleep(500);
+        linearSlide.setHeight(LinearPosition.TWO, 0.3);
 
-        // -- GET CONE FROM CONE STACK -
-//        driveTrain.rotateDegrees(rightSided, 90, 0.5);
-//        driveTrain.moveForward(10);
+        // drive to and face tall pole depending on start side
+        driveTrain.moveForward(27.25 * 1, 0.5);
+        driveTrain.rotateDegrees((!rightSided),45,0.5);
+        driveTrain.moveForward(3, 0.3);
+        sleep(500);
+        claw.closeClaw();
+        sleep(500);
+        driveTrain.moveForward(-3, 0.3);
+        driveTrain.rotateDegrees((!rightSided), 45, 0.5);
+        linearSlide.setHeight(LinearPosition.ZERO, 0.5);
 
         // -- PARKING --
 //         Move backward in line with the 3 parking locations
