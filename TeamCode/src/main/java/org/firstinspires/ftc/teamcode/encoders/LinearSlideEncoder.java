@@ -23,7 +23,7 @@ public class LinearSlideEncoder {
     }
     // TODO: hone specific heights, especially cone heights.
     public enum LinearPosition {
-        ZERO(0),
+        ZERO(100),
         ONE(1400),
         TWO(2300),
         THREE(3200),
