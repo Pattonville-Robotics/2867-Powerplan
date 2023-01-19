@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.apache.commons.math3.analysis.integration.LegendreGaussIntegrator;
@@ -56,6 +57,7 @@ import java.util.List;
  * is explained below.
  */
 @Autonomous
+@Disabled
 public class TensorFlowAuto extends LinearOpMode {
 
     /*
@@ -177,8 +179,7 @@ public class TensorFlowAuto extends LinearOpMode {
 
         // Check for the most confident tensorflow object's label and move accordingly
         if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Pete")) {
-            driveTrain.rotateDegrees(false, 90, 0.5);
-            driveTrain.moveForward(23.5, 0.5);
+
         } else if (mostConfidentRecognition != null && mostConfidentRecognition.getLabel().equals("Eagle")) {
             driveTrain.rotateDegrees(true, 90, 0.5);
             driveTrain.moveForward(23.5, 0.5);

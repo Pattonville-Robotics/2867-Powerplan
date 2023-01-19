@@ -11,8 +11,9 @@ import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
     // Speed of
-    float slideSpeed;
+    float slideSpeed = 0.5f;
     final double changeConst = 0.0009;
+    double spdMult;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -54,6 +55,9 @@ public class MecanumTeleOp extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
+            // Drive speed
+            spdMult = ( 1.0d / (double) (1.0 + gamepad1.left_trigger*4.0)); // I LOVE INTEGER DIVISION !!
+
             double y = controller1.getLeftY() * Math.abs(controller1.getLeftY());
             if (Math.abs(controller1.getLeftX()) > xDriftLimit){
                 x = controller1.getLeftX() * 1.1 * Math.abs(controller1.getLeftX() * 1.1); // Counteract imperfect strafing
@@ -69,14 +73,12 @@ public class MecanumTeleOp extends LinearOpMode {
             */
             // Mecanum movement
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
+            double frontLeftPower = (y + x + rx) / denominator * spdMult;
+            double backLeftPower = (y - x + rx) / denominator * spdMult;
+            double frontRightPower = (y - x - rx) / denominator * spdMult;
+            double backRightPower = (y + x - rx) / denominator * spdMult;
             driveTrain.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
-            // Linear slide speed
-            float LT = gamepad1.left_trigger;
-            slideSpeed = LT == 0 ? 0.3f : 0.3f*LT;
+
 
             // Linear slide
             if (gamepad2.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
@@ -120,7 +122,8 @@ public class MecanumTeleOp extends LinearOpMode {
 //            if (bButton.get()) telemetry.addLine("B pressed");
 
             telemetry.addData("CurrentServoPosition", claw.getPosition());
-            telemetry.addData("CurrentLsPosition", linearSlide.analogPos);
+            telemetry.addData("threehalves.itch.io/zgame", spdMult);
+            telemetry.addData(":)", gamepad1.left_trigger);
 
             telemetry.update();
         }

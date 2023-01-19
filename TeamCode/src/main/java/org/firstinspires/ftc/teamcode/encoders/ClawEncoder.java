@@ -11,7 +11,7 @@ public class ClawEncoder {
         HardwareMap hardwareMap = linearOp.hardwareMap;
         claw = hardwareMap.servo.get("claw");
         // needs to go to position on start for getPositon to be accurate
-        claw.setPosition(0.2);
+        claw.setPosition(0.23);
     }
 
     public void openClaw() {
