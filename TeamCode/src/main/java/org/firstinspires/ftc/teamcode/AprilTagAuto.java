@@ -68,6 +68,16 @@ public class AprilTagAuto extends LinearOpMode
 
     AprilTagDetection tagOfInterest = null;
 
+    // our claw's hooks currently have trouble dropping a cone. this helps w/ consistency
+    public void dropCone() {
+        for (int i = 0; i > 10; i++) {
+            claw.closeClaw();
+            sleep(250);
+            claw.openClaw();
+            sleep(250);
+        }
+    }
+
     @Override
     public void runOpMode() throws InterruptedException
     {
@@ -92,6 +102,7 @@ public class AprilTagAuto extends LinearOpMode
         });
 
         telemetry.setMsTransmissionInterval(50);
+
 
         /*
          * The INIT-loop:
@@ -192,8 +203,8 @@ public class AprilTagAuto extends LinearOpMode
         driveTrain.rotateDegrees((!rightSided),45,0.5);
         driveTrain.moveForward(3, 0.3);
         sleep(500);
-        claw.closeClaw();
-        sleep(500);
+        dropCone();
+        sleep(1000);
         driveTrain.moveForward(-3, 0.3);
         driveTrain.rotateDegrees((!rightSided), 45, 0.5);
         linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, 0.5);
