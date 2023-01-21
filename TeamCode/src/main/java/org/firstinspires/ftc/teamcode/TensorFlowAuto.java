@@ -57,6 +57,7 @@ import java.util.List;
  * is explained below.
  */
 @Autonomous
+// We have switched from TensorFlow to Apriltags, this code should not be ran but is kept to reference logic/routine
 @Disabled
 public class TensorFlowAuto extends LinearOpMode {
 
@@ -69,7 +70,7 @@ public class TensorFlowAuto extends LinearOpMode {
      */
     private static final String TFOD_MODEL_ASSET = "CustomSleeveFINAL.tflite";
     // before comp. make a copy with leftSided inverted. Then we are free to start on any side
-    private static boolean rightSided = false;
+    private static final boolean rightSided = false;
     int side;
 
     // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomSleeve.tflite";

@@ -2,10 +2,7 @@ package org.firstinspires.ftc.teamcode.encoders;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-//import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.apache.commons.math3.geometry.euclidean.twod.Line;
 
 public class LinearSlideEncoder {
     LinearOpMode linearOp;
@@ -13,15 +10,14 @@ public class LinearSlideEncoder {
     public LinearPosition currentPosition = LinearPosition.ZERO;
     public float analogPos;
 
-    public LinearSlideEncoder (LinearOpMode linearOp){
+    public LinearSlideEncoder (LinearOpMode linearOp) {
         this.linearOp = linearOp;
         HardwareMap hardwareMap = linearOp.hardwareMap;
         motor = hardwareMap.dcMotor.get("motorLinearSlide");
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setTargetPosition(0);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-    // TODO: hone specific heights, especially cone heights.
+    // Tested heights for junctions, in motor ticks.
     public enum LinearPosition {
         ZERO(100),
         ONE(1400),
@@ -34,69 +30,26 @@ public class LinearSlideEncoder {
         LinearPosition(int i) {this.ticks = i;}
     }
 
-//    public float getHeight(){
-//        return (height);
-//    }
-
-//    public void changeHeight(float inches, float speed) throws InterruptedException {
-//        float time = 0.5f * Math.abs(inches) * (1/speed);
-//
-//        // 1 or -1 if inches in pos. or neg.
-//        float dir = inches/(Math.abs(inches));
-//
-//        motorLinearSlide.setPower(speed*dir);
-//        linearOp.wait( (long) (1000 * time) );
-//        motorLinearSlide.setPower(0);
-//        height += inches;
-//    }
-
-//    public void setHeight(float inches, float speed) throws InterruptedException{
-//        float target = height - inches;
-//        changeHeight(target, speed);
-//    }
-
     public void setHeight(LinearPosition pos, double power) {
-        double speedMult;
-//        motorLinearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        motorLinearSlide.setPower(power);
-//        motorLinearSlide.setTargetPosition(pos.ticks);
-//        motorLinearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-//        if ((pos - currentPosition) > 0){
-//            speedMult = 0.3;
-//        }
-//        else{ speedMult = 1;}
-
         motor.setPower(power);
-
-//        motor.setPower(power * speedMult);
-
         currentPosition = pos;
-//        if (motor.getMode() != DcMotor.RunMode.RUN_TO_POSITION){
-//            motor.setTargetPosition(0);
-//            motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        }
         motor.setTargetPosition(pos.ticks);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-//        while (motor.isBusy()){
-//            Thread.yield(); // lets the rest of teleop run, i think
-//        }
-//        motor.setPower(0);
     }
 
     public void analogMoveSlide(float magnitude) {
-        // maintain upper bound for movement
-        if (! (motor.getCurrentPosition() >= LinearPosition.THREE.ticks)) {
-            magnitude = (float) Math.max(magnitude, -0.25);
-            motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
-            motor.setPower(magnitude);
-            analogPos = motor.getCurrentPosition();
-        }
+        // if slide is going above upper bound (3rd junction height), stop and return early.
+        if (motor.getCurrentPosition() >= LinearPosition.THREE.ticks) return;
+        // add a cap on downward slide movement to avoid unspooling.
+        magnitude = (float) Math.max(magnitude, -0.25);
+
+        motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
+        motor.setPower(magnitude);
+        analogPos = motor.getCurrentPosition();
     }
 
     public void reset() {
+        // Reset the motor's "0" position. Only necessary in case of build issue.
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setTargetPosition(0);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);

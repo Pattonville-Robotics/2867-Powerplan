@@ -10,59 +10,39 @@ import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 @TeleOp
 public class MecanumTeleOp extends LinearOpMode {
-    // Speed of
-    float slideSpeed = 0.5f;
-    final double changeConst = 0.0009;
+
+    final float slideSpeed = 0.5f;
     double spdMult;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        GamepadEx controller1 = new GamepadEx(gamepad1);
-        GamepadEx controller2 = new GamepadEx(gamepad2);
 
+        final GamepadEx controller1 = new GamepadEx(gamepad1);
         final MecanumEncoder driveTrain = new MecanumEncoder(this);
         final LinearSlideEncoder linearSlide = new LinearSlideEncoder(this);
         final ClawEncoder claw = new ClawEncoder(this);
         double x;
+        // Higher limit -> less precise control, but avoids unintentional inputs due to stick drift
         double xDriftLimit = 0.1;
-
-        // Set up button readers
-        // Linear slide movement
-//        GamepadButton aButton = new GamepadButton(controller1, GamepadKeys.Button.A);
-//        GamepadButton xButton = new GamepadButton(controller1, GamepadKeys.Button.X);
-//        GamepadButton yButtonnn,,./. n  = new GamepadButton(controller1, GamepadKeys.Button.Y);
-//        GamepadButton bButton = new GamepadButton(controller1, GamepadKeys.Button.B);
-
-//        ButtonReader aButton = new ButtonReader(controller1, GamepadKeys.Button.A);
-//        ButtonReader xButton = new ButtonReader(controller1, GamepadKeys.Button.X);
-//        ButtonReader yButton = new ButtonReader(controller1, GamepadKeys.Button.Y);
-//        ButtonReader bButton = new ButtonReader(controller1, GamepadKeys.Button.B);
-
-        // Claw
-//        GamepadButton leftBumper = new GamepadButton(controller1, GamepadKeys.Button.LEFT_BUMPER);
-//        ButtonReader leftBumper = new ButtonReader(controller1, GamepadKeys.Button.LEFT_BUMPER);
-
-        // Linear slide movement
-//        aButton.whenPressed(() -> linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed));
-//        xButton.whenPressed(() -> linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed));
-//        yButton.whenPressed(() -> linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed));
-//        bButton.whenPressed(() -> linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed));
-
-        // Claw
-//        leftBumper.whenPressed(claw::toggleClaw);
 
         waitForStart();
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            // Drive speed
-            spdMult = ( 1.0d / (double) (1.0 + gamepad1.left_trigger*4.0)); // I LOVE INTEGER DIVISION !!
+            /*
+            Drive speed multiplier.
+            First, get the analogue value of the left trigger and multiply it by 4, then add 1.
+            Then, we get the reciprocal of this so speed decreases as the trigger is held.
+            We multiplied by 4 to increase the intensity of slowdown when LT is held.
+            We add 1 to ensure LT being unpressed means normal speed, and to avoid division by 0.
+            */
+            spdMult = ( 1.0d / (1.0 + gamepad1.left_trigger*4.0));
 
             double y = controller1.getLeftY() * Math.abs(controller1.getLeftY());
-            if (Math.abs(controller1.getLeftX()) > xDriftLimit){
+            if (Math.abs(controller1.getLeftX()) > xDriftLimit) {
                 x = controller1.getLeftX() * 1.1 * Math.abs(controller1.getLeftX() * 1.1); // Counteract imperfect strafing
             }
-            else{
+            else {
                 x = 0f;
             }
             double rx = controller1.getRightX();
@@ -79,51 +59,30 @@ public class MecanumTeleOp extends LinearOpMode {
             double backRightPower = (y + x - rx) / denominator * spdMult;
             driveTrain.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
 
-
-            // Linear slide
+            // Linear slide face buttons
             if (gamepad2.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
             if (gamepad2.x) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
             if (gamepad2.y) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
-            if (gamepad2.b) {
-                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed*0.5);
-//                claw.openClaw();
-            }
+            // when moving to zero, go at half speed to prevent issues with the slide's string unspooling.
+            if (gamepad2.b) {linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed*0.5);}
 
-            if (gamepad2.dpad_down) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, slideSpeed);
-            if (gamepad2.dpad_left) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE2, slideSpeed);
-            if (gamepad2.dpad_up) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE3, slideSpeed);
-            if (gamepad2.dpad_right) {
-                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
-//                claw.openClaw();
-            }
-
+            // Used to reset the "0" point of the slide if it becomes stuck lowering in auto.
+            // If it is not reset, the face button positions will be completely inaccurate
             if (gamepad2.back){
                 linearSlide.reset();
             }
 
-//            if (gamepad2.a) {
-//                linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed);
-//                claw.openClaw();
-//            }
-
             // to account for drift (don't raise when just turning) and potential conflict w/ the specific positions above
-            if (Math.abs(gamepad2.right_stick_y) > 0.1){
+            if (Math.abs(gamepad2.right_stick_y) > 0.1) {
                 linearSlide.analogMoveSlide(-gamepad2.right_stick_y);
             }
 
             // Claw
-
             if (gamepad2.left_bumper) claw.openClaw();
             if (gamepad2.right_bumper) claw.closeClaw();
 
-//            if (aButton.get()) telemetry.addLine("A pressed");
-//            if (xButton.get()) telemetry.addLine("X pressed");
-//            if (yButton.get()) telemetry.addLine("Y pressed");
-//            if (bButton.get()) telemetry.addLine("B pressed");
-
-            telemetry.addData("CurrentServoPosition", claw.getPosition());
-            telemetry.addData("threehalves.itch.io/zgame", spdMult);
-            telemetry.addData(":)", gamepad1.left_trigger);
+//            telemetry.addData("CurrentServoPosition", claw.getPosition());
+//            telemetry.addData("SpeedMultiplier", spdMult);
 
             telemetry.update();
         }

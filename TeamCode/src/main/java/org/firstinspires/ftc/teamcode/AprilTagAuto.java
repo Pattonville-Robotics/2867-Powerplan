@@ -42,7 +42,6 @@ public class AprilTagAuto extends LinearOpMode
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
-
     static final double FEET_PER_METER = 3.28084;
 
     ClawEncoder claw;
@@ -62,7 +61,7 @@ public class AprilTagAuto extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-    // Tag IDs 1,2,3 from the 36h11 family
+    // Tag IDs 1,2,3 from the 36h11 family. Names based on park locations
     int LEFT = 1;
     int MID = 2;
     int RIGHT = 3;
@@ -105,7 +104,7 @@ public class AprilTagAuto extends LinearOpMode
             claw = new ClawEncoder(this);
             linearSlide = new LinearSlideEncoder(this);
 
-            // # just april tag things
+            // #justapriltagthings
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if(currentDetections.size() != 0)
@@ -188,7 +187,7 @@ public class AprilTagAuto extends LinearOpMode
         sleep(500);
         linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, 0.3);
 
-        // drive to and face tall pole depending on start side
+        // drive to and face med junction depending on start side
         driveTrain.moveForward(27.25 * 1, 0.5);
         driveTrain.rotateDegrees((!rightSided),45,0.5);
         driveTrain.moveForward(3, 0.3);
@@ -215,7 +214,7 @@ public class AprilTagAuto extends LinearOpMode
         }
         else
         {
-
+            // robot is already in position 2, so do nothing.
         }
 
     }
