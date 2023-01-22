@@ -15,6 +15,7 @@ public class LinearSlideEncoder {
         HardwareMap hardwareMap = linearOp.hardwareMap;
         motor = hardwareMap.dcMotor.get("motorLinearSlide");
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setTargetPosition(0);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     // Tested heights for junctions, in motor ticks.

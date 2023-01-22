@@ -70,7 +70,7 @@ public class AprilTagAuto extends LinearOpMode
 
     // our claw's hooks currently have trouble dropping a cone. this helps w/ consistency
     public void dropCone() {
-        for (int i = 0; i > 10; i++) {
+        for (int i = 0; i < 10; i++) {
             claw.closeClaw();
             sleep(250);
             claw.openClaw();
@@ -194,33 +194,34 @@ public class AprilTagAuto extends LinearOpMode
         /* Actually do something useful */
         // -- SCORING PRE-LOADED CONE --
         // The pre-loaded cone is assumed to be under the claw at the start.
-        claw.openClaw();
-        sleep(500);
-        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, 0.3);
-
-        // drive to and face med junction depending on start side
-        driveTrain.moveForward(27.25 * 1, 0.5);
-        driveTrain.rotateDegrees((!rightSided),45,0.5);
-        driveTrain.moveForward(3, 0.3);
-        sleep(500);
-        dropCone();
-        sleep(1000);
-        driveTrain.moveForward(-3, 0.3);
-        driveTrain.rotateDegrees((!rightSided), 45, 0.5);
-        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, 0.5);
+//        claw.openClaw();
+//        sleep(500);
+            linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, 0.3);
+            sleep(1000);
+//
+//        // drive to and face med junction depending on start side
+//        driveTrain.moveForward(27.25 * 1, 0.8);
+//        driveTrain.rotateDegrees((!rightSided),45,0.5);
+//        driveTrain.moveForward(5, 0.8);
+//        sleep(500);
+//        dropCone();
+//        sleep(1000);
+//        driveTrain.moveForward(-5, 0.5);
+//        driveTrain.rotateDegrees((rightSided), 45, 0.5);
+//        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, 0.5);
 
         // -- PARKING --
 
-        driveTrain.moveForward(23.5,0.5);
+        driveTrain.moveForward(26.5,0.5);
 
-        if(tagOfInterest.id == LEFT)
+        if(tagOfInterest != null && tagOfInterest.id == LEFT)
         {
-            driveTrain.rotateDegrees(false, 90, 0.5);
+            driveTrain.rotateDegrees(false, 100, 0.5);
             driveTrain.moveForward(23.5, 0.5);
         }
-        else if(tagOfInterest.id == RIGHT)
+        else if(tagOfInterest != null && tagOfInterest.id == RIGHT)
         {
-            driveTrain.rotateDegrees(true, 90, 0.5);
+            driveTrain.rotateDegrees(true, 80, 0.5);
             driveTrain.moveForward(23.5, 0.5);
         }
         else

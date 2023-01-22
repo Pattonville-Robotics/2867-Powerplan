@@ -162,10 +162,14 @@ public class MecanumEncoder {
     }
 
     public boolean areMotorsBusy() {
+        boolean busy = true;
         for (DcMotor motor : motors) {
-            if (motor.isBusy()) return true;
+            if (!motor.isBusy()) {
+                busy = false;
+                break;
+            }
         }
-        return false;
+        return busy;
     }
 //
 //    public int TARGET_REACHED_THRESHOLD = 3;

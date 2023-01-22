@@ -20,7 +20,7 @@ public class ClawEncoder {
     }
 
     public void closeClaw() {
-        claw.setPosition(0.23);
+        claw.setPosition(0.20);
         isOpen = false;
     }
 
