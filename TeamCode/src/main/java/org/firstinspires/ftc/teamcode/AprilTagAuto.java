@@ -216,12 +216,12 @@ public class AprilTagAuto extends LinearOpMode
 
         if(tagOfInterest != null && tagOfInterest.id == LEFT)
         {
-            driveTrain.rotateDegrees(false, 100, 0.5);
+            driveTrain.rotateDegrees(false, 90, 0.5);
             driveTrain.moveForward(23.5, 0.5);
         }
         else if(tagOfInterest != null && tagOfInterest.id == RIGHT)
         {
-            driveTrain.rotateDegrees(true, 80, 0.5);
+            driveTrain.rotateDegrees(true, 90, 0.5);
             driveTrain.moveForward(23.5, 0.5);
         }
         else
