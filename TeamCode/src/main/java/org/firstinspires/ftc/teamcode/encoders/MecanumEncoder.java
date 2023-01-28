@@ -171,14 +171,6 @@ public class MecanumEncoder {
         }
         return busy;
     }
-//
-//    public int TARGET_REACHED_THRESHOLD = 3;
-//    protected boolean motorsReachedTarget(int... targetPositions) {
-//        for (int i = 0; i < 4; i++) {
-//
-//        }
-//        return false;
-//    }
 
     protected void setMotorTargets(final int targetPostitionLeft, final int targetPostitionRight){setMotorTargets(targetPostitionLeft, targetPostitionRight, targetPostitionLeft, targetPostitionRight);}
 

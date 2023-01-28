@@ -41,7 +41,7 @@ public class LinearSlideEncoder {
     public void analogMoveSlide(float magnitude) {
         // if slide is going above upper bound (3rd junction height), stop and return early. only stop if slide is moving up.
         if ((motor.getCurrentPosition() >= LinearPosition.THREE.ticks) && (magnitude > 0)) return;
-        // add a cap on downward slide movement to avoid unspooling.
+        // a cap on downward slide movement speed to avoid the string unspooling.
         magnitude = (float) Math.max(magnitude, -0.25);
 
         motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
@@ -50,7 +50,7 @@ public class LinearSlideEncoder {
     }
 
     public void reset() {
-        // Reset the motor's "0" position. Only necessary in case of build issue.
+        // Reset the motor's "0" position. Only necessary in case the slide string gets stuck going down to make positions enum accurate.
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setTargetPosition(0);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
