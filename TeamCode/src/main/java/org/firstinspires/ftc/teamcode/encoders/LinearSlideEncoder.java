@@ -20,7 +20,7 @@ public class LinearSlideEncoder {
     }
     // Tested heights for junctions, in motor ticks.
     public enum LinearPosition {
-        ZERO(100),
+        ZERO(200),
         ONE(1400),
         TWO(2300),
         THREE(3200),
@@ -41,6 +41,9 @@ public class LinearSlideEncoder {
     public void analogMoveSlide(float magnitude) {
         // if slide is going above upper bound (3rd junction height), stop and return early. only stop if slide is moving up.
         if ((motor.getCurrentPosition() >= LinearPosition.THREE.ticks) && (magnitude > 0)) return;
+        // same but for lower bound
+        if ((motor.getCurrentPosition() >= LinearPosition.ZERO.ticks) && (magnitude < 0)) return;
+
         // a cap on downward slide movement speed to avoid the string unspooling.
         magnitude = (float) Math.max(magnitude, -0.25);
 
