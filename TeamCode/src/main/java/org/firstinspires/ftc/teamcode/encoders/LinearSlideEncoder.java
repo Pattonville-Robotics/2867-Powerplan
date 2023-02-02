@@ -20,11 +20,11 @@ public class LinearSlideEncoder {
     }
     // Tested heights for junctions, in motor ticks.
     public enum LinearPosition {
-        ZERO(200),
+        ZERO(10),
         ONE(1400),
         TWO(2300),
         THREE(3200),
-        CONE1(300),
+        CONE1(700),
         CONE2(120),
         CONE3(180);
         private final int ticks;
@@ -42,10 +42,10 @@ public class LinearSlideEncoder {
         // if slide is going above upper bound (3rd junction height), stop and return early. only stop if slide is moving up.
         if ((motor.getCurrentPosition() >= LinearPosition.THREE.ticks) && (magnitude > 0)) return;
         // same but for lower bound
-        if ((motor.getCurrentPosition() >= LinearPosition.ZERO.ticks) && (magnitude < 0)) return;
+//        if ((motor.getCurrentPosition() <= LinearPosition.ZERO.ticks) && (magnitude < 0)) return;
 
         // a cap on downward slide movement speed to avoid the string unspooling.
-        magnitude = (float) Math.max(magnitude, -0.25);
+        magnitude = (float) Math.max(magnitude, -0.2);
 
         motor.setTargetPosition((int) (motor.getCurrentPosition() + Math.floor(magnitude * 160)));
         motor.setPower(magnitude);

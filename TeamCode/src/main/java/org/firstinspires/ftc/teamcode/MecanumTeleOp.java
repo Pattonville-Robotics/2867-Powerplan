@@ -81,7 +81,7 @@ public class MecanumTeleOp extends LinearOpMode {
             if (gamepad2.left_bumper) claw.openClaw();
             if (gamepad2.right_bumper) claw.closeClaw();
 
-//            telemetry.addData("CurrentServoPosition", claw.getPosition());
+            telemetry.addData("linearSlidePosition", linearSlide.motor.getCurrentPosition());
 //            telemetry.addData("SpeedMultiplier", spdMult);
 
             telemetry.update();

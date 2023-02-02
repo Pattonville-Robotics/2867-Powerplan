@@ -194,10 +194,10 @@ public class AprilTagAuto extends LinearOpMode
         /* Actually do something useful */
         // -- SCORING PRE-LOADED CONE --
         // The pre-loaded cone is assumed to be under the claw at the start.
-//        claw.openClaw();
-//        sleep(500);
-            linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, 0.3);
-            sleep(1000);
+        claw.openClaw();
+        sleep(500);
+        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, 0.3);
+        sleep(1000);
 //
 //        // drive to and face med junction depending on start side
 //        driveTrain.moveForward(27.25 * 1, 0.8);
@@ -213,15 +213,17 @@ public class AprilTagAuto extends LinearOpMode
         // -- PARKING --
 
         driveTrain.moveForward(26.5,0.5);
+        driveTrain.moveForward(12,0.5);
+        driveTrain.moveForward(-12u,0.5);
 
         if(tagOfInterest != null && tagOfInterest.id == LEFT)
         {
-            driveTrain.rotateDegrees(false, 90, 0.5);
+            driveTrain.rotateDegrees(false, 80, 0.5);
             driveTrain.moveForward(23.5, 0.5);
         }
         else if(tagOfInterest != null && tagOfInterest.id == RIGHT)
         {
-            driveTrain.rotateDegrees(true, 90, 0.5);
+            driveTrain.rotateDegrees(true, 80, 0.5);
             driveTrain.moveForward(23.5, 0.5);
         }
         else
