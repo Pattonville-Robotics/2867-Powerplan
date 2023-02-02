@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 @TeleOp
-public class MecanumTeleOp extends LinearOpMode {
+public class OmniTeleOp extends LinearOpMode {
 
     final float slideSpeed = 0.5f;
     double spdMult;
@@ -40,17 +40,17 @@ public class MecanumTeleOp extends LinearOpMode {
             spdMult = ( 1.0d / (1.0 + gamepad1.left_trigger*4.0));
 
             // COMMENTED OUT DUE TO WORKING ON NEW DRIVETRAIN
-            y = (controller1.getLeftY() * Math.abs(controller1.getLeftY()));
-            if (Math.abs(controller1.getLeftX()) > xDriftLimit) {
-                x = controller1.getLeftX() * 1.1 * Math.abs(controller1.getLeftX() * 1.1); // Counteract imperfect strafing
-            }
-            else {
-                x = 0f;
-            }
+//            double y = (controller1.getLeftY() * Math.abs(controller1.getLeftY()));
+//            if (Math.abs(controller1.getLeftX()) > xDriftLimit) {
+//                x = controller1.getLeftX() * 1.1 * Math.abs(controller1.getLeftX() * 1.1); // Counteract imperfect strafing
+//            }
+//            else {
+//                x = 0f;
+//            }
             double rx = controller1.getRightX();
 
-//            x = Math.cos(Math.acos(controller1.getLeftX()) - (Math.PI/4));
-//            y = Math.sin(Math.asin(controller1.getLeftY()) - (Math.PI/4));
+            x = Math.cos(Math.acos(controller1.getLeftX()) - (Math.PI/4));
+            y = Math.sin(Math.asin(controller1.getLeftY()) - (Math.PI/4));
 
             /*
             Denominator is the largest motor power (absolute value) or 1
