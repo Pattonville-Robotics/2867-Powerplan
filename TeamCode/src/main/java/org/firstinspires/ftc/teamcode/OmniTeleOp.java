@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 @TeleOp
+@Disabled // disable because omni drivetrain is no longer being planned
 public class OmniTeleOp extends LinearOpMode {
 
     final float slideSpeed = 0.5f;
