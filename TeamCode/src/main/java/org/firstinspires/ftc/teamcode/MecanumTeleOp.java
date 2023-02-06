@@ -37,7 +37,7 @@ public class MecanumTeleOp extends LinearOpMode {
             We multiplied by 4 to increase the intensity of slowdown when LT is held.
             We add 1 to ensure LT being unpressed means normal speed, and to avoid division by 0.
             */
-            spdMult = ( 1.0d / (1.0 + gamepad1.left_trigger*4.0));
+            spdMult = ( 1.0d / (1.0 + (gamepad1.left_trigger + gamepad1.right_trigger)*4.0));
 
             // COMMENTED OUT DUE TO WORKING ON NEW DRIVETRAIN
             y = (controller1.getLeftY() * Math.abs(controller1.getLeftY()));
