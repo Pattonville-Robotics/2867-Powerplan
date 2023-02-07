@@ -19,6 +19,8 @@ public class MecanumEncoder {
     DcMotor motorFrontRight;
     DcMotor motorBackRight;
     List<DcMotor> motors;
+    double t = 0;
+    double lerpTime = 20; // 20 ticks per sec, so lerp over 1 sec
 
     public MecanumEncoder(LinearOpMode linearOp) {
         this.linearOp = linearOp;
@@ -99,16 +101,25 @@ public class MecanumEncoder {
     }
 
     public void setPower(double frontLeft, double backLeft, double frontRight, double backRight) {
-        motorFrontLeft.setPower(frontLeft);
-        motorBackLeft.setPower(backLeft);
-        motorFrontRight.setPower(frontRight);
-        motorBackRight.setPower(backRight);
+        // Check if all motors are stopped by averaging the power between all 4.
+        if ((frontLeft+backLeft+frontRight+backRight)/4 == 0){
+            // t represents ticks since motors have "started" moving. used for smooth power lerp
+            t = 0;
+        }
+        else {
+            // increase t and set lerp value to smoothly go to target speed.
+            t = Math.min(t+1, lerpTime); // cap t at lerp time. max value for lerp eqn is 1.
+        }
+        double lerp = t/lerpTime;
+        motorFrontLeft.setPower(frontLeft*lerp);
+        motorBackLeft.setPower(backLeft*lerp);
+        motorFrontRight.setPower(frontRight*lerp);
+        motorBackRight.setPower(backRight*lerp);
     }
 
     public void setPower(double power) {
         setPower(power, power, power, power);
     }
-
 
     public void rotateDegrees(boolean clockwise, double degrees, double power){
         setMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
