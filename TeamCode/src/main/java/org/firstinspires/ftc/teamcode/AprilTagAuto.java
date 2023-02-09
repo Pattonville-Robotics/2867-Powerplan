@@ -214,7 +214,7 @@ public class AprilTagAuto extends LinearOpMode
 
         driveTrain.moveForward(26.5,0.5);
         driveTrain.moveForward(12,0.5);
-        driveTrain.moveForward(-12u,0.5);
+        driveTrain.moveForward(-12,0.5);
 
         if(tagOfInterest != null && tagOfInterest.id == LEFT)
         {
