@@ -21,8 +21,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
@@ -32,12 +32,20 @@ import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+
 
 import java.util.ArrayList;
 
 @Autonomous
-public class AprilTagAuto extends LinearOpMode
+public class RRAuto extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -46,7 +54,7 @@ public class AprilTagAuto extends LinearOpMode
 
     ClawEncoder claw;
     LinearSlideEncoder linearSlide;
-    MecanumEncoder driveTrain;
+    SampleMecanumDrive driveTrain;
     boolean rightSided = false;
 
     // Lens intrinsics
@@ -93,25 +101,27 @@ public class AprilTagAuto extends LinearOpMode
             }
 
             @Override
-            public void onError(int errorCode)
-            {
-
-            }
+            public void onError(int errorCode) {}
         });
 
         telemetry.setMsTransmissionInterval(50);
 
+        /** Set up encoders **/
+        driveTrain = new SampleMecanumDrive(hardwareMap);
+        claw = new ClawEncoder(this);
+        linearSlide = new LinearSlideEncoder(this);
 
+
+        // SET UP ROADRUNNER TRAJECTORIES
+        Trajectory parkTraj = driveTrain.trajectoryBuilder(new Pose2d())
+                .forward(10)
+                .build();
         /*
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
         while (!isStarted() && !isStopRequested())
         {
-            /** Set up encoders **/
-            driveTrain = new MecanumEncoder(this);
-            claw = new ClawEncoder(this);
-            linearSlide = new LinearSlideEncoder(this);
 
             // #justapriltagthings
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -190,44 +200,7 @@ public class AprilTagAuto extends LinearOpMode
         }
 
         /* Actually do something useful */
-        // -- SCORING PRE-LOADED CONE --
-        // The pre-loaded cone is assumed to be under the claw at the start.
-        claw.openClaw();
-        sleep(500);
-        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, 0.3);
-        sleep(1000);
-//
-//        // drive to and face med junction depending on start side
-//        driveTrain.moveForward(27.25 * 1, 0.8);
-//        driveTrain.rotateDegrees((!rightSided),45,0.5);
-//        driveTrain.moveForward(5, 0.8);
-//        sleep(500);
-//        dropCone();
-//        sleep(1000);
-//        driveTrain.moveForward(-5, 0.5);
-//        driveTrain.rotateDegrees((rightSided), 45, 0.5);
-//        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, 0.5);
-
-        // -- PARKING --
-
-        driveTrain.moveForward(26.5,0.5);
-        driveTrain.moveForward(12,0.5);
-        driveTrain.moveForward(-12,0.5);
-
-        if(tagOfInterest != null && tagOfInterest.id == LEFT)
-        {
-            driveTrain.rotateDegrees(false, 80, 0.5);
-            driveTrain.moveForward(23.5, 0.5);
-        }
-        else if(tagOfInterest != null && tagOfInterest.id == RIGHT)
-        {
-            driveTrain.rotateDegrees(true, 80, 0.5);
-            driveTrain.moveForward(23.5, 0.5);
-        }
-        else
-        {
-            // robot is already in position 2, so do nothing.
-        }
+        driveTrain.followTrajectory(parkTraj);
 
     }
 

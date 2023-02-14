@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 @TeleOp
-@Disabled // disable because omni drivetrain is no longer being planned
+//@Disabled // disable because omni drivetrain is no longer being planned
 public class OmniTeleOp extends LinearOpMode {
 
     final float slideSpeed = 0.5f;
