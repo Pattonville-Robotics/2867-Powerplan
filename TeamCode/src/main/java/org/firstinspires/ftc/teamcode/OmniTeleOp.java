@@ -91,14 +91,15 @@ public class OmniTeleOp extends LinearOpMode {
             }
             // move 4 bar w/ left stick.
             if (Math.abs(gamepad2.left_stick_y) > 0.1) {
-                linearSlide.analogMoveSlide(-gamepad2.left_stick_y);
+                bar.analogMoveSlide(-gamepad2.left_stick_y);
             }
 
             // Claw
             if (gamepad2.left_bumper) claw.openClaw();
             if (gamepad2.right_bumper) claw.closeClaw();
 
-            telemetry.addData("linearSlidePosition", linearSlide.motor.getCurrentPosition());
+            telemetry.addData("linearSlidePosition: ", linearSlide.motor.getCurrentPosition());
+            telemetry.addData("barPosition: ", bar.motor.getCurrentPosition());
 //            telemetry.addData("SpeedMultiplier", spdMult);
 
             telemetry.update();
