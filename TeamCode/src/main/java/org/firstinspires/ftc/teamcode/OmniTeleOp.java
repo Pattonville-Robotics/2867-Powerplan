@@ -6,11 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
-import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
+import org.firstinspires.ftc.teamcode.encoders.ArmEncoder;
+
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 
 @TeleOp
-//@Disabled // disable because omni drivetrain is no longer being planned
+//@Disabled
 public class OmniTeleOp extends LinearOpMode {
 
     final float slideSpeed = 0.5f;
@@ -21,7 +22,10 @@ public class OmniTeleOp extends LinearOpMode {
 
         final GamepadEx controller1 = new GamepadEx(gamepad1);
         final MecanumEncoder driveTrain = new MecanumEncoder(this);
-        final LinearSlideEncoder linearSlide = new LinearSlideEncoder(this);
+        // linear slide motor
+        final ArmEncoder linearSlide = new ArmEncoder(this, "motorLinearSlide");
+        // virtual 4 bar motor
+        final ArmEncoder bar = new ArmEncoder(this, "motorBar");
         final ClawEncoder claw = new ClawEncoder(this);
         double x;
         double y;
@@ -68,11 +72,11 @@ public class OmniTeleOp extends LinearOpMode {
             driveTrain.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
 
             // Linear slide face buttons
-            if (gamepad2.a) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ONE, slideSpeed);
-            if (gamepad2.x) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.TWO, slideSpeed);
-            if (gamepad2.y) linearSlide.setHeight(LinearSlideEncoder.LinearPosition.THREE, slideSpeed);
+            if (gamepad2.a) linearSlide.setHeight(ArmEncoder.LinearPosition.ONE, slideSpeed);
+            if (gamepad2.x) linearSlide.setHeight(ArmEncoder.LinearPosition.TWO, slideSpeed);
+            if (gamepad2.y) linearSlide.setHeight(ArmEncoder.LinearPosition.THREE, slideSpeed);
             // when moving to zero, go at half speed to prevent issues with the slide's string unspooling.
-            if (gamepad2.b) {linearSlide.setHeight(LinearSlideEncoder.LinearPosition.ZERO, slideSpeed*0.5);}
+            if (gamepad2.b) {linearSlide.setHeight(ArmEncoder.LinearPosition.ZERO, slideSpeed*0.5);}
 
             // Used to reset the "0" point of the slide if it becomes stuck lowering in auto.
             // If it is not reset, the face button positions will be completely inaccurate
@@ -81,8 +85,13 @@ public class OmniTeleOp extends LinearOpMode {
             }
 
             // to account for drift (don't raise when just turning) and potential conflict w/ the specific positions above
+            // move linear slide with left stick.
             if (Math.abs(gamepad2.right_stick_y) > 0.1) {
                 linearSlide.analogMoveSlide(-gamepad2.right_stick_y);
+            }
+            // move 4 bar w/ left stick.
+            if (Math.abs(gamepad2.left_stick_y) > 0.1) {
+                linearSlide.analogMoveSlide(-gamepad2.left_stick_y);
             }
 
             // Claw
