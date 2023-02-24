@@ -25,6 +25,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.encoders.ArmEncoder;
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
@@ -53,7 +54,8 @@ public class RRAuto extends LinearOpMode
     static final double FEET_PER_METER = 3.28084;
 
     ClawEncoder claw;
-    LinearSlideEncoder linearSlide;
+    ArmEncoder linearSlide;
+    ArmEncoder bar;
     SampleMecanumDrive driveTrain;
     boolean rightSided = false;
 
@@ -74,13 +76,15 @@ public class RRAuto extends LinearOpMode
 
     AprilTagDetection tagOfInterest = null;
 
+//    public enum XPositions
+
     // our claw's hooks currently have trouble dropping a cone. this helps w/ consistency
     public void dropCone() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             claw.closeClaw();
-            sleep(250);
+            sleep(100);
             claw.openClaw();
-            sleep(250);
+            sleep(100);
         }
     }
 
@@ -109,10 +113,13 @@ public class RRAuto extends LinearOpMode
         /** Set up encoders **/
         driveTrain = new SampleMecanumDrive(hardwareMap);
         claw = new ClawEncoder(this);
-        linearSlide = new LinearSlideEncoder(this);
-
+        linearSlide = new ArmEncoder(this, "motorLinearSlide");
+        bar = new ArmEncoder(this, "motorBar");
 
         // SET UP ROADRUNNER TRAJECTORIES
+        Pose2d startPose = new Pose2d(-72, -18, Math.toRadians(90));
+        driveTrain.setPoseEstimate(startPose);
+
         Trajectory parkTraj = driveTrain.trajectoryBuilder(new Pose2d())
                 .forward(10)
                 .build();
@@ -201,6 +208,19 @@ public class RRAuto extends LinearOpMode
 
         /* Actually do something useful */
         driveTrain.followTrajectory(parkTraj);
+
+        if(tagOfInterest != null && tagOfInterest.id == LEFT)
+        {
+            // zone 1
+        }
+        else if(tagOfInterest != null && tagOfInterest.id == RIGHT)
+        {
+            // zone 3
+        }
+        else
+        {
+            // zone 2
+        }
 
     }
 

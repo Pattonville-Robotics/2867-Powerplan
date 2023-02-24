@@ -1,3 +1,9 @@
+// DO NOT USE THIS ENCODER USE THE ARM ENCODER!!!!!!!!
+// DO NOT USE THIS ENCODER USE THE ARM ENCODER!!!!!!!!
+// DO NOT USE THIS ENCODER USE THE ARM ENCODER!!!!!!!!
+// DO NOT USE THIS ENCODER USE THE ARM ENCODER!!!!!!!!
+// DO NOT USE THIS ENCODER USE THE ARM ENCODER!!!!!!!!
+
 package org.firstinspires.ftc.teamcode.encoders;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -45,11 +51,12 @@ public class ArmEncoder {
 //        if ((motor.getCurrentPosition() <= LinearPosition.ZERO.ticks) && (magnitude < 0)) return;
 
         // a cap on downward slide movement speed to avoid the string unspooling.
-        magnitude = (float) Math.max(magnitude, -0.2);
+//        magnitude = (float) Math.max(magnitude, -0.2);
 
         this.motor.setTargetPosition((int) (this.motor.getCurrentPosition() + Math.floor(magnitude * 160)));
         this.motor.setPower(magnitude);
         analogPos = this.motor.getCurrentPosition();
+
     }
 
     public void reset() {
@@ -58,4 +65,5 @@ public class ArmEncoder {
         this.motor.setTargetPosition(0);
         this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
+
 }

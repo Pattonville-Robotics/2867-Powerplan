@@ -21,15 +21,17 @@ public class MecanumEncoder {
     List<DcMotor> motors;
     double t = 0;
     double lerpTime = 20; // 20 ticks per sec, so lerp over 1 sec
+    boolean lerpEnabled = false; // i recommend putting this on true, but it might be causing the slow motors issue.
+    double lerp;
 
     public MecanumEncoder(LinearOpMode linearOp) {
         this.linearOp = linearOp;
 
         HardwareMap hardwareMap = linearOp.hardwareMap;
-        motorFrontLeft = hardwareMap.dcMotor.get("motorFrontLeft");
-        motorBackLeft = hardwareMap.dcMotor.get("motorBackLeft");
-        motorFrontRight = hardwareMap.dcMotor.get("motorFrontRight");
-        motorBackRight = hardwareMap.dcMotor.get("motorBackRight");
+        motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft");
+        motorBackLeft = hardwareMap.dcMotor.get("BackLeft");
+        motorFrontRight = hardwareMap.dcMotor.get("FrontRight");
+        motorBackRight = hardwareMap.dcMotor.get("BackRight");
 
         motors = new ArrayList<>();
         motors.add(motorFrontLeft);
@@ -110,7 +112,13 @@ public class MecanumEncoder {
             // increase t and set lerp value to smoothly go to target speed.
             t = Math.min(t+1, lerpTime); // cap t at lerp time. max value for lerp eqn is 1.
         }
-        double lerp = t/lerpTime;
+
+        if (lerpEnabled){
+            lerp = t/lerpTime;
+        }
+        else{
+            lerp = 1;
+        }
         motorFrontLeft.setPower(frontLeft*lerp);
         motorBackLeft.setPower(backLeft*lerp);
         motorFrontRight.setPower(frontRight*lerp);
