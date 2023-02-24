@@ -30,8 +30,8 @@ public class OmniTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         final GamepadEx controller1 = new GamepadEx(gamepad1);
-        final MecanumEncoder driveTrain = new MecanumEncoder(this);
-        final SampleMecanumDrive RRdriveTrain = new SampleMecanumDrive(hardwareMap);
+//        final MecanumEncoder driveTrain = new MecanumEncoder(this);
+        final SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
         // linear slide motor
         final ArmEncoder linearSlide = new ArmEncoder(this, "motorLinearSlide");
         // virtual 4 bar motor
@@ -49,14 +49,14 @@ public class OmniTeleOp extends LinearOpMode {
         StandardTrackingWheelLocalizer myLocalizer = new StandardTrackingWheelLocalizer(hardwareMap);
         // assuming the bot ends auto at the center of field facing 90 deg. TODO carry over x,y,heading from auto
         // https://learnroadrunner.com/advanced.html#transferring-pose-between-opmodes
-        myLocalizer.setPoseEstimate(new Pose2d(0, 0, Math.toRadians(90)));
+        driveTrain.setPoseEstimate(new Pose2d(0, 0, Math.toRadians(90)));
 
         waitForStart();
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
             myLocalizer.update();
-            Pose2d myPose = myLocalizer.getPoseEstimate();
+            Pose2d myPose = driveTrain.getPoseEstimate();
 
             /*
             Drive speed multiplier.
@@ -88,7 +88,7 @@ public class OmniTeleOp extends LinearOpMode {
             double backLeftPower = Px * spdMult;
             double frontRightPower = Px * spdMult;
             double backRightPower = Py * spdMult;
-            driveTrain.setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
+            driveTrain.setMotorPowers(frontLeftPower, backLeftPower, frontRightPower, backRightPower);
 
 
             // Linear slide face buttons
