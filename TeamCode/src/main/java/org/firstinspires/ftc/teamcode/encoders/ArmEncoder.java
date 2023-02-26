@@ -8,6 +8,7 @@ package org.firstinspires.ftc.teamcode.encoders;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ArmEncoder {
@@ -15,24 +16,28 @@ public class ArmEncoder {
     public DcMotor motor;
     private LinearPosition currentPosition = LinearPosition.ZERO;
     private float analogPos;
+    private int speed;
 
-    public ArmEncoder(LinearOpMode linearOp, String motorName) {
+    public ArmEncoder(LinearOpMode linearOp, String motorName, int speed) {
         this.linearOp = linearOp;
         HardwareMap hardwareMap = linearOp.hardwareMap;
         this.motor = hardwareMap.dcMotor.get(motorName);
         this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.motor.setTargetPosition(0);
         this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.speed = speed;
+
     }
-    // Tested heights for junctions, in motor ticks.
+    // (Un)Tested heights for junctions, in motor ticks.
     public enum LinearPosition {
         ZERO(10),
-        ONE(1400),
-        TWO(2300),
-        THREE(3200),
-        CONE1(700),
-        CONE2(120),
-        CONE3(180);
+        ONE(100),
+        TWO(300),
+        THREE(500),
+        CONE1(30),
+        CONE2(60),
+        CONE3(90);
         private final int ticks;
         LinearPosition(int i) {this.ticks = i;}
     }
@@ -53,7 +58,7 @@ public class ArmEncoder {
         // a cap on downward slide movement speed to avoid the string unspooling.
 //        magnitude = (float) Math.max(magnitude, -0.2);
 
-        this.motor.setTargetPosition((int) (this.motor.getCurrentPosition() + Math.floor(magnitude * 160)));
+        this.motor.setTargetPosition((int) (this.motor.getCurrentPosition() + Math.floor(magnitude * this.speed)));
         this.motor.setPower(magnitude);
         analogPos = this.motor.getCurrentPosition();
 
@@ -64,6 +69,18 @@ public class ArmEncoder {
         this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.motor.setTargetPosition(0);
         this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public int getPos(){
+        return this.motor.getCurrentPosition();
+    }
+
+    public void fuck(){
+        this.motor.setPower(1d);
+    }
+
+    public void fuck2(){
+        this.motor.setPower(0d);
     }
 
 }

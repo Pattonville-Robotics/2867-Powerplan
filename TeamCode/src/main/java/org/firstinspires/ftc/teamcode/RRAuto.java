@@ -113,15 +113,23 @@ public class RRAuto extends LinearOpMode
         /** Set up encoders **/
         driveTrain = new SampleMecanumDrive(hardwareMap);
         claw = new ClawEncoder(this);
-        linearSlide = new ArmEncoder(this, "motorLinearSlide");
-        bar = new ArmEncoder(this, "motorBar");
+        linearSlide = new ArmEncoder(this, "motorLinearSlide", 100);
+        bar = new ArmEncoder(this, "motorBar", 100);
 
         // SET UP ROADRUNNER TRAJECTORIES
         Pose2d startPose = new Pose2d(-72, -18, Math.toRadians(90));
         driveTrain.setPoseEstimate(startPose);
 
-        Trajectory parkTraj = driveTrain.trajectoryBuilder(new Pose2d())
-                .forward(10)
+        Trajectory forwardTraj = driveTrain.trajectoryBuilder(new Pose2d())
+                .forward(18)
+                .build();
+
+        Trajectory zoneThreeTraj = driveTrain.trajectoryBuilder(new Pose2d())
+                .strafeRight(18)
+                .build();
+
+        Trajectory zoneOneTraj = driveTrain.trajectoryBuilder(new Pose2d())
+                .strafeLeft(18)
                 .build();
         /*
          * The INIT-loop:
@@ -207,15 +215,17 @@ public class RRAuto extends LinearOpMode
         }
 
         /* Actually do something useful */
-        driveTrain.followTrajectory(parkTraj);
+        driveTrain.followTrajectory(forwardTraj);
 
         if(tagOfInterest != null && tagOfInterest.id == LEFT)
         {
             // zone 1
+            driveTrain.followTrajectory(zoneOneTraj);
         }
         else if(tagOfInterest != null && tagOfInterest.id == RIGHT)
         {
             // zone 3
+            driveTrain.followTrajectory(zoneThreeTraj);
         }
         else
         {
