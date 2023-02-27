@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class ArmEncoder {
     LinearOpMode linearOp;
     public DcMotor motor;
-    private LinearPosition currentPosition = LinearPosition.ZERO;
+    private ArmPosition currentPosition = ArmPosition.LS_ZERO;
     private float analogPos;
     private int speed;
 
@@ -30,45 +30,26 @@ public class ArmEncoder {
 
     }
     // (Un)Tested heights for junctions, in motor ticks.
-    public enum LinearPosition {
-        ZERO(10),
-        ONE(100),
-        TWO(300),
-        THREE(500),
-        CONE1(30),
-        CONE2(60),
-        CONE3(90);
-        private final int ticks;
-        LinearPosition(int i) {this.ticks = i;}
-    }
-
     public enum ArmPosition {
-        ZERO(5),
-        ONE(100),
-        TWO(300),
-        THREE(500),
-        CONE1(30),
-        CONE2(60),
-        CONE3(90),
-        TEST1(133),
-        TEST2(54),
-        MIN(3),
-        MID(98),
-        MAX(183);
+        LS_ZERO(10),
+        LS_ONE(100),
+        LS_TWO(300),
+        LS_THREE(500),
+        LS_CONE1(30),
+        LS_CONE2(60),
+        LS_CONE3(90),
+        BAR_TEST1(133),
+        BAR_TEST2(54),
+        BAR_MIN(3),
+        BAR_MID(98),
+        BAR_MAX(183);
         private final int ticks;
         ArmPosition(int i) {this.ticks = i;}
     }
 
-    public void setHeight(LinearPosition pos, double power) {
+    public void setHeight(ArmPosition pos, double power) {
         this.motor.setPower(power);
         this.currentPosition = pos;
-        this.motor.setTargetPosition(pos.ticks);
-        this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
-    public void setBarHeight(ArmPosition pos, double power) {
-        this.motor.setPower(power);
-//        this.currentPosition = pos;
         this.motor.setTargetPosition(pos.ticks);
         this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
@@ -78,17 +59,17 @@ public class ArmEncoder {
         double p = 0d;
         int curPos = this.motor.getCurrentPosition();
         int targPos = this.motor.getTargetPosition();
-        int mid = ArmPosition.MID.ticks;
-        int min = ArmPosition.MIN.ticks;
-        int max = ArmPosition.MAX.ticks;
+        int mid = ArmPosition.BAR_MID.ticks;
+        int min = ArmPosition.BAR_MIN.ticks;
+        int max = ArmPosition.BAR_MAX.ticks;
 
-        if (this.motor.getCurrentPosition() < ArmPosition.MID.ticks){
+        if (this.motor.getCurrentPosition() < ArmPosition.BAR_MID.ticks){
             // bar is now below midpoint, so moving "up" is against grav
             // BEWARE this is all integer division
             p = (double) (targPos-curPos) / (mid-min);
 
         }
-        else if (curPos < ArmPosition.MID.ticks) {
+        else if (curPos < ArmPosition.BAR_MID.ticks) {
             // bar is now below midpoint, so moving "up" is with grav
             p = (double) (curPos-targPos) / (max-mid);
 

@@ -27,6 +27,7 @@ import org.firstinspires.ftc.teamcode.dependencies.RobotParameters;
 public class OmniTeleOp extends LinearOpMode {
 
     final float slideSpeed = 0.5f;
+    final float barSpeed = 0.05f;
     double spdMult;
 
     @Override
@@ -102,28 +103,28 @@ public class OmniTeleOp extends LinearOpMode {
             if (gamepad2.a) {
 //                linearSlide.setHeight(ArmEncoder.LinearPosition.ONE, slideSpeed);
 //                linearSlide2.setHeight(ArmEncoder.LinearPosition.ONE, slideSpeed);
-                bar.setBarHeight(ArmEncoder.ArmPosition.TEST1, 0.5);
-                bar2.setBarHeight(ArmEncoder.ArmPosition.TEST1, 0.5);
+                bar.setHeight(ArmEncoder.ArmPosition.BAR_TEST1, barSpeed);
+                bar2.setHeight(ArmEncoder.ArmPosition.BAR_TEST1, barSpeed);
 
             }
             if (gamepad2.x) {
 //                linearSlide.setHeight(ArmEncoder.LinearPosition.TWO, slideSpeed);
 //                linearSlide2.setHeight(ArmEncoder.LinearPosition.TWO, slideSpeed);
-                bar.setBarHeight(ArmEncoder.ArmPosition.TEST2, 0.05);
-                bar2.setBarHeight(ArmEncoder.ArmPosition.TEST2, 0.05);
+                bar.setHeight(ArmEncoder.ArmPosition.BAR_TEST2, barSpeed);
+                bar2.setHeight(ArmEncoder.ArmPosition.BAR_TEST2, barSpeed);
             }
             if (gamepad2.y) {
 //                linearSlide.setHeight(ArmEncoder.LinearPosition.THREE, slideSpeed);
 //                linearSlide2.setHeight(ArmEncoder.LinearPosition.THREE, slideSpeed);
-                bar.setBarHeight(ArmEncoder.ArmPosition.MIN, 0.05);
-                bar2.setBarHeight(ArmEncoder.ArmPosition.MIN, 0.05);
+                bar.setHeight(ArmEncoder.ArmPosition.BAR_MIN, barSpeed);
+                bar2.setHeight(ArmEncoder.ArmPosition.BAR_MIN, barSpeed);
             }
             // when moving to zero, go at half speed to prevent issues with the slide's string unspooling.
             if (gamepad2.b) {
 //                linearSlide.setHeight(ArmEncoder.LinearPosition.ZERO, slideSpeed*0.5);
 //                linearSlide2.setHeight(ArmEncoder.LinearPosition.ZERO, slideSpeed*0.5);
-                bar.setBarHeight(ArmEncoder.ArmPosition.MID, 0.05);
-                bar2.setBarHeight(ArmEncoder.ArmPosition.MID, 0.05);
+                bar.setHeight(ArmEncoder.ArmPosition.BAR_MID, barSpeed);
+                bar2.setHeight(ArmEncoder.ArmPosition.BAR_MID, barSpeed);
             }
 
             // Used to reset the "0" point of the slide if it becomes stuck lowering in auto.
