@@ -17,6 +17,8 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.dependencies.RobotParameters;
 
@@ -34,10 +36,11 @@ public class OmniTeleOp extends LinearOpMode {
 //        final MecanumEncoder driveTrain = new MecanumEncoder(this);
         final SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
         // linear slide motor
-        final ArmEncoder linearSlide = new ArmEncoder(this, "motorLinearSlide", 600);
-        final ArmEncoder linearSlide2 = new ArmEncoder(this, "motorLinearSlide2", 600);
+        final ArmEncoder linearSlide = new ArmEncoder(this, "motorLinearSlide", 1200);
+        final ArmEncoder linearSlide2 = new ArmEncoder(this, "motorLinearSlide2", 1200);
         // virtual 4 bar motor
-        final ArmEncoder bar = new ArmEncoder(this, "motorBar", 300);
+        final ArmEncoder bar = new ArmEncoder(this, "motorBar", 10);
+        final ArmEncoder bar2 = new ArmEncoder(this, "motorBar2", 10);
         final ClawEncoder claw = new ClawEncoder(this);
         double x;
         double y;
@@ -97,21 +100,30 @@ public class OmniTeleOp extends LinearOpMode {
 
             // Linear slide face buttons
             if (gamepad2.a) {
-                linearSlide.setHeight(ArmEncoder.LinearPosition.ONE, slideSpeed);
-                linearSlide2.setHeight(ArmEncoder.LinearPosition.ONE, slideSpeed);
+//                linearSlide.setHeight(ArmEncoder.LinearPosition.ONE, slideSpeed);
+//                linearSlide2.setHeight(ArmEncoder.LinearPosition.ONE, slideSpeed);
+                bar.setBarHeight(ArmEncoder.ArmPosition.TEST1, 0.5);
+                bar2.setBarHeight(ArmEncoder.ArmPosition.TEST1, 0.5);
+
             }
             if (gamepad2.x) {
-                linearSlide.setHeight(ArmEncoder.LinearPosition.TWO, slideSpeed);
-                linearSlide2.setHeight(ArmEncoder.LinearPosition.TWO, slideSpeed);
+//                linearSlide.setHeight(ArmEncoder.LinearPosition.TWO, slideSpeed);
+//                linearSlide2.setHeight(ArmEncoder.LinearPosition.TWO, slideSpeed);
+                bar.setBarHeight(ArmEncoder.ArmPosition.TEST2, 0.05);
+                bar2.setBarHeight(ArmEncoder.ArmPosition.TEST2, 0.05);
             }
             if (gamepad2.y) {
-                linearSlide.setHeight(ArmEncoder.LinearPosition.THREE, slideSpeed);
-                linearSlide2.setHeight(ArmEncoder.LinearPosition.THREE, slideSpeed);
+//                linearSlide.setHeight(ArmEncoder.LinearPosition.THREE, slideSpeed);
+//                linearSlide2.setHeight(ArmEncoder.LinearPosition.THREE, slideSpeed);
+                bar.setBarHeight(ArmEncoder.ArmPosition.MIN, 0.05);
+                bar2.setBarHeight(ArmEncoder.ArmPosition.MIN, 0.05);
             }
             // when moving to zero, go at half speed to prevent issues with the slide's string unspooling.
             if (gamepad2.b) {
-                linearSlide.setHeight(ArmEncoder.LinearPosition.ZERO, slideSpeed*0.5);
-                linearSlide2.setHeight(ArmEncoder.LinearPosition.ZERO, slideSpeed*0.5);
+//                linearSlide.setHeight(ArmEncoder.LinearPosition.ZERO, slideSpeed*0.5);
+//                linearSlide2.setHeight(ArmEncoder.LinearPosition.ZERO, slideSpeed*0.5);
+                bar.setBarHeight(ArmEncoder.ArmPosition.MID, 0.05);
+                bar2.setBarHeight(ArmEncoder.ArmPosition.MID, 0.05);
             }
 
             // Used to reset the "0" point of the slide if it becomes stuck lowering in auto.
@@ -130,7 +142,12 @@ public class OmniTeleOp extends LinearOpMode {
             // move 4 bar w/ left stick.
             if (Math.abs(gamepad2.left_stick_y) > 0.1) {
                 bar.analogMoveSlide(-gamepad2.left_stick_y);
+                bar2.analogMoveSlide(-gamepad2.left_stick_y);
             }
+
+            // VERY IMPORTANT that these get called
+            bar.updateBarSpeed();
+            bar2.updateBarSpeed();
 
             if (gamepad2.dpad_up){
                 linearSlide.fuck();
@@ -143,13 +160,23 @@ public class OmniTeleOp extends LinearOpMode {
             }
 
             // Claw
-            if (gamepad2.left_bumper) claw.openClaw();
-            if (gamepad2.right_bumper) claw.closeClaw();
-//            if (gamepad2.left_bumper) claw.changeClaw(-0.01);
-//            if (gamepad2.right_bumper) claw.changeClaw(0.01);
+            if (gamepad2.left_bumper){
+                if (claw.getPosition()){
+                    claw.closeClaw();
+                }
+                else{
+                    claw.openClaw();
+                }
+            }
+
+            // initially used w/ telemetry to automate claw
+//            if (gamepad2.left_bumper) claw.changeClaw(-0.005);
+//            if (gamepad2.right_bumper) claw.changeClaw(0.005);
 
             telemetry.addData("linearSlidePosition: ", linearSlide.getPos());
             telemetry.addData("barPosition: ", bar.getPos());
+            telemetry.addData("barTarget: ", bar.motor.getTargetPosition());
+            telemetry.addData("barPow: ", bar.motor.getPower());
             telemetry.addData("stickX : ", x);
             telemetry.addData("stickY : ", y);
             telemetry.addData("FL : ", frontLeftPower);
