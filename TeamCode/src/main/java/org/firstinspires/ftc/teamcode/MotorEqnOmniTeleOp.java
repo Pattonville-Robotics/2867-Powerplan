@@ -167,6 +167,8 @@ public class MotorEqnOmniTeleOp extends LinearOpMode {
             telemetry.addData("barPosition: ", bar.getPos());
             telemetry.addData("barTarget: ", bar.motor.getTargetPosition());
             telemetry.addData("barPow: ", bar.motor.getPower());
+            telemetry.addData("targAngle : ", barAngle);
+            telemetry.addData("barVel : ", bar.motor.getVelocity());
             telemetry.addData("stickX : ", x);
             telemetry.addData("stickY : ", y);
             telemetry.addData("FL : ", frontLeftPower);
