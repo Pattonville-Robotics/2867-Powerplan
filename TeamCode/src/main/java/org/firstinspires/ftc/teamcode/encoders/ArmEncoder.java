@@ -82,7 +82,7 @@ public class ArmEncoder {
 
         this.motor.setPower(p);
         // give leeway with position
-        if (Math.abs(curPos - targPos) <= 20){
+        if (Math.abs(curPos - targPos) <= 30){
             this.motor.setPower(Math.abs(p)*0.5);
         }
 

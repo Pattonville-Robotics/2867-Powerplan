@@ -165,10 +165,12 @@ public class TorqueOmniTeleOp extends LinearOpMode {
 //            if (gamepad2.left_bumper) claw.changeClaw(-0.005);
 //            if (gamepad2.right_bumper) claw.changeClaw(0.005);
 
-            telemetry.addData("linearSlidePosition: ", linearSlide.getPos());
-            telemetry.addData("barPosition: ", bar.getPos());
-            telemetry.addData("barTarget: ", bar.motor.getTargetPosition());
-            telemetry.addData("barPow: ", bar.motor.getPower());
+            telemetry.addData("linearSlidePosition : ", linearSlide.getPos());
+            telemetry.addData("barPosition : ", bar.getPos());
+            telemetry.addData("barTarget : ", bar.motor.getTargetPosition());
+            telemetry.addData("barPow : ", bar.motor.getPower());
+            telemetry.addData("targAngle : ", barAngle);
+            telemetry.addData("barVel : ", bar.motor.getVelocity());
             telemetry.addData("stickX : ", x);
             telemetry.addData("stickY : ", y);
             telemetry.addData("FL : ", frontLeftPower);
