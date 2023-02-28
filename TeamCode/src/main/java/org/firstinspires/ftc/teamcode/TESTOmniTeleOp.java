@@ -1,30 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
-import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer;
-import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
-import org.firstinspires.ftc.teamcode.encoders.ArmEncoder;
-
-import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.dependencies.RobotParameters;
+import org.firstinspires.ftc.teamcode.encoders.ArmEncoder;
+import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 
 @TeleOp
 //@Disabled
-public class OmniTeleOp extends LinearOpMode {
+public class TESTOmniTeleOp extends LinearOpMode {
 
     final float slideSpeed = 0.5f;
     final float barSpeed = 0.05f;
@@ -42,13 +30,16 @@ public class OmniTeleOp extends LinearOpMode {
         // virtual 4 bar motor
         final ArmEncoder bar = new ArmEncoder(this, "motorBar", 10);
         final ArmEncoder bar2 = new ArmEncoder(this, "motorBar2", 10);
+        bar.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bar2.motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         final ClawEncoder claw = new ClawEncoder(this);
+
         double x;
         double y;
         double theta;
         double Px;
         double Py;
-        double barAngle = 0;
         // Higher limit -> less precise control, but avoids unintentional inputs due to stick drift
         double xDriftLimit = 0.1;
 
@@ -137,30 +128,29 @@ public class OmniTeleOp extends LinearOpMode {
 
             // to account for drift (don't raise when just turning) and potential conflict w/ the specific positions above
             // move linear slide with right stick.
-//            if (Math.abs(gamepad2.right_stick_y) > 0.1) {
-//                linearSlide.analogMoveSlide(-gamepad2.right_stick_y);
-//                linearSlide2.analogMoveSlide(-gamepad2.right_stick_y);
-//            }
-//            // move 4 bar w/ left stick.
-//            if (Math.abs(gamepad2.left_stick_y) > 0.1) {
-//                bar.analogMoveSlide(-gamepad2.left_stick_y);
-//                bar2.analogMoveSlide(-gamepad2.left_stick_y);
-//            }
+            if (Math.abs(gamepad2.right_stick_y) > 0.1) {
+                linearSlide.analogMoveSlide(-gamepad2.right_stick_y);
+                linearSlide2.analogMoveSlide(-gamepad2.right_stick_y);
+            }
+            // move 4 bar w/ left stick.
+            if (Math.abs(gamepad2.left_stick_y) > 0.1) {
+                bar.analogMoveSlide(-gamepad2.left_stick_y);
+                bar2.analogMoveSlide(-gamepad2.left_stick_y);
+            }
 
             // VERY IMPORTANT that these get called
 //            bar.updateBarSpeed();
 //            bar2.updateBarSpeed();
 
             if (gamepad2.dpad_up){
-                barAngle++;
+                linearSlide.fuck();
+                linearSlide.fuck();
             }
 
             if (gamepad2.dpad_down){
-                barAngle--;
+                linearSlide.fuck2();
+                linearSlide.fuck2();
             }
-
-            bar.moveBarToAngle(barAngle);
-            bar2.moveBarToAngle(barAngle);
 
             // Claw
             if (gamepad2.left_bumper){

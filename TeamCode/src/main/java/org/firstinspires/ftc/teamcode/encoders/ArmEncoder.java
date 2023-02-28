@@ -7,13 +7,14 @@
 package org.firstinspires.ftc.teamcode.encoders;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ArmEncoder {
     LinearOpMode linearOp;
-    public DcMotor motor;
+    public DcMotorEx motor;
     private ArmPosition currentPosition = ArmPosition.LS_ZERO;
     private float analogPos;
     private int speed;
@@ -21,10 +22,10 @@ public class ArmEncoder {
     public ArmEncoder(LinearOpMode linearOp, String motorName, int speed) {
         this.linearOp = linearOp;
         HardwareMap hardwareMap = linearOp.hardwareMap;
-        this.motor = hardwareMap.dcMotor.get(motorName);
-        this.motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.motor = (DcMotorEx) hardwareMap.dcMotor.get(motorName);
+        this.motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         this.motor.setTargetPosition(0);
-        this.motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        this.motor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         this.motor.setDirection(DcMotorSimple.Direction.REVERSE);
         this.speed = speed;
 
@@ -40,9 +41,9 @@ public class ArmEncoder {
         LS_CONE3(90),
         BAR_TEST1(133),
         BAR_TEST2(54),
-        BAR_MIN(3),
-        BAR_MID(98),
-        BAR_MAX(183);
+        BAR_MIN(5),
+        BAR_MID(92),
+        BAR_MAX(200);
         private final int ticks;
         ArmPosition(int i) {this.ticks = i;}
     }
@@ -63,23 +64,42 @@ public class ArmEncoder {
         int min = ArmPosition.BAR_MIN.ticks;
         int max = ArmPosition.BAR_MAX.ticks;
 
-        if (this.motor.getCurrentPosition() < ArmPosition.BAR_MID.ticks){
+        if (curPos < ArmPosition.BAR_MID.ticks){
             // bar is now below midpoint, so moving "up" is against grav
             // BEWARE this is all integer division
             p = (double) (targPos-curPos) / (mid-min);
 
         }
-        else if (curPos < ArmPosition.BAR_MID.ticks) {
+        else if (curPos > ArmPosition.BAR_MID.ticks) {
             // bar is now below midpoint, so moving "up" is with grav
             p = (double) (curPos-targPos) / (max-mid);
 
         }
         else {
             // bar is exactly at midpoint
-            p = 0.05;
+            p = 0.0005;
         }
 
-        this.motor.setPower(Math.abs(p));
+        this.motor.setPower(p);
+        // give leeway with position
+        if (Math.abs(curPos - targPos) <= 15){
+            this.motor.setPower(Math.abs(p)*0.2);
+        }
+
+    }
+
+    public void moveBarToAngle(double theta){
+        this.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // weight of bar in kg
+        double w = 0.2;
+        // length of bar in m
+        double r = 0.4572;
+        // stall torque of motor in Nm. we have 2 motors
+        double maxt = 3.2 * 2;
+
+        double t = w*r*Math.sin(Math.toRadians(theta));
+
+        this.motor.setPower(t/maxt);
 
     }
 
