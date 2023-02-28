@@ -138,16 +138,24 @@ public class VelTrackerOmniTeleOp extends LinearOpMode {
 //            bar.updateBarSpeed();
 //            bar2.updateBarSpeed();
 
+            // if this actually works im gonna be PISSED
             if (gamepad2.dpad_up){
-                barAngle++;
+                bar.motor.setVelocity(3);
+                bar2.motor.setVelocity(3);
             }
 
-            if (gamepad2.dpad_down){
-                barAngle--;
+            else if (gamepad2.dpad_down){
+                bar.motor.setVelocity(-3);
+                bar2.motor.setVelocity(-3);
             }
 
-            bar.moveBarToAngle(barAngle);
-            bar2.moveBarToAngle(barAngle);
+            else {
+                bar.motor.setVelocity(0);
+                bar2.motor.setVelocity(0);
+            }
+
+//            bar.moveBarToAngle(barAngle);
+//            bar2.moveBarToAngle(barAngle);
 
             // Claw
             if (gamepad2.left_bumper){
