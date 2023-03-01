@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.dependencies.RobotParameters;
+
 public class OmniEncoder {
     LinearOpMode linearOp;
     DcMotorEx motorTop;
@@ -28,6 +30,19 @@ public class OmniEncoder {
         }
     }
 
+    public void setMode(DcMotor.RunMode mode){
+        for (DcMotorEx m : motorList){
+            m.setMode(mode);
+        }
+    }
+
+    public void setTargets(int t, int b, int l, int r){
+        motorTop.setTargetPosition(t);
+        motorBottom.setTargetPosition(b);
+        motorLeft.setTargetPosition(l);
+        motorRight.setTargetPosition(r);
+    }
+
     public void setPower(double pT, double pB, double pL, double pR){
         motorTop.setPower(pT);
         motorBottom.setPower(pB);
@@ -35,4 +50,55 @@ public class OmniEncoder {
         motorRight.setPower(pR);
     }
 
+    public void move(double moveInches, double strafeInches, double power){
+        // pos is up and right. neg is down and left
+        double x = Math.abs(moveInches) / moveInches * power;
+        double y = Math.abs(strafeInches) / strafeInches * power;
+
+        // motor powers
+        double rx = 0.0;
+        double topP = x;
+        double bottomP = -x;
+        double leftP = y;
+        double rightP = -y;
+
+        // motor ticks
+        int xT = inToTicks(strafeInches);
+        int yT = inToTicks(moveInches);
+        int topT = xT;
+        int bottomT = -xT;
+        int leftT = yT;
+        int rightT = -yT;
+
+        setPower(topP,bottomP,leftP,rightP);
+        setTargets(topT, bottomT, leftT, rightT);
+
+        // do not run more methods until target is reached (motors will stop being busy)
+        if (motorsAreBusy(motorList) && linearOp.opModeIsActive()){
+            Thread.yield();
+        }
+
+    }
+
+    public void move(double moveInches, double strafeInches){
+        move(moveInches,strafeInches,1);
+    }
+
+    public int inToTicks(double inches){
+        return (int) (inches / RobotParameters.wheelCircumference) * RobotParameters.ticksPerRevolution;
+    }
+
+    public double degToIn(double degrees){
+        return (RobotParameters.wheelBaseCircumference) * (degrees/360);
+    }
+
+    public boolean motorsAreBusy(DcMotorEx[] motorList){
+        for (DcMotorEx m : motorList){
+            if (m.isBusy()){
+                return true;
+            }
+        }
+        return false;
+
+    }
 }
