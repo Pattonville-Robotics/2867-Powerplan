@@ -36,7 +36,13 @@ public class OmniEncoder {
         }
     }
 
-    public void setTargets(int t, int b, int l, int r){
+    public void setTarget(int t){
+        for (DcMotorEx m : motorList){
+            m.setTargetPosition(t);
+        }
+    }
+
+    public void setTarget(int t, int b, int l, int r){
         motorTop.setTargetPosition(t);
         motorBottom.setTargetPosition(b);
         motorLeft.setTargetPosition(l);
@@ -71,13 +77,29 @@ public class OmniEncoder {
         int rightT = -yT;
 
         setPower(topP,bottomP,leftP,rightP);
-        setTargets(topT, bottomT, leftT, rightT);
+        setTarget(topT, bottomT, leftT, rightT);
 
         // do not run more methods until target is reached (motors will stop being busy)
         if (motorsAreBusy(motorList) && linearOp.opModeIsActive()){
             Thread.yield();
         }
 
+    }
+
+    public void rotate(double degrees, double power){
+        // pos -> CW, neg -> CCW
+        double p = Math.abs(degrees) / degrees * power;
+
+        double in  = degToIn(degrees);
+        int t = inToTicks(in);
+
+        setPower(p);
+        setTarget(t);
+
+        // do not run more methods until target is reached (motors will stop being busy)
+        if (motorsAreBusy(motorList) && linearOp.opModeIsActive()){
+            Thread.yield();
+        }
     }
 
     public void move(double moveInches, double strafeInches){
