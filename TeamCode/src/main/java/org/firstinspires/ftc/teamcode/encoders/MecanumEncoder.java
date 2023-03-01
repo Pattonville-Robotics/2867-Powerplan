@@ -65,9 +65,9 @@ public class MecanumEncoder {
         // Mecanum movement
         double denominator = Math.max(Math.abs(y) + Math.abs(x), 1/power);
         double frontLeftPower = (y + x) / denominator;
-        double backLeftPower = (y - x) / denominator * 1.3;
+        double backLeftPower = (y - x) / denominator;
         double frontRightPower = (y - x) / denominator;
-        double backRightPower = (y + x) / denominator * 1.3;
+        double backRightPower = (y + x) / denominator;
 
         double dy = direction.getY(); // Remember, this is reversed!
         double dx = direction.getX() * 1.1; // Counteract imperfect strafing
