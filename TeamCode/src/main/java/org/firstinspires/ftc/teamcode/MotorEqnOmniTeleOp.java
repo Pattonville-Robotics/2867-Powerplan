@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.teamcode.encoders.ArmEncoder;
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 
 @TeleOp
-//@Disabled
+@Disabled
 public class MotorEqnOmniTeleOp extends LinearOpMode {
 
     final float slideSpeed = 0.5f;
