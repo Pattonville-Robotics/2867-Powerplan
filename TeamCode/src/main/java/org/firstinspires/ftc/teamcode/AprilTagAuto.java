@@ -109,9 +109,9 @@ public class AprilTagAuto extends LinearOpMode
         while (!isStarted() && !isStopRequested())
         {
             /** Set up encoders **/
-            driveTrain = new Omni(this);
+            driveTrain = new OmniEncoder(this);
             claw = new ClawEncoder(this);
-            linearSlide = new LinearSlideEncoder(this);
+//            linearSlide = new LinearSlideEncoder(this);
 
             // #justapriltagthings
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -192,10 +192,10 @@ public class AprilTagAuto extends LinearOpMode
         /* Actually do something useful */
         // -- SCORING PRE-LOADED CONE --
         // The pre-loaded cone is assumed to be under the claw at the start.
-        claw.openClaw();
-        sleep(500);
-        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, 0.3);
-        sleep(1000);
+//        claw.openClaw();
+//        sleep(500);
+////        linearSlide.setHeight(LinearSlideEncoder.LinearPosition.CONE1, 0.3);
+//        sleep(1000);
 //
 //        // drive to and face med junction depending on start side
 //        driveTrain.moveForward(27.25 * 1, 0.8);
