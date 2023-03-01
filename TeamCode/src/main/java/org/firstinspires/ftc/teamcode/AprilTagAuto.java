@@ -28,6 +28,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
+import org.firstinspires.ftc.teamcode.encoders.OmniEncoder;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -45,8 +46,7 @@ public class AprilTagAuto extends LinearOpMode
     static final double FEET_PER_METER = 3.28084;
 
     ClawEncoder claw;
-    LinearSlideEncoder linearSlide;
-    MecanumEncoder driveTrain;
+    OmniEncoder driveTrain;
     boolean rightSided = false;
 
     // Lens intrinsics
@@ -109,7 +109,7 @@ public class AprilTagAuto extends LinearOpMode
         while (!isStarted() && !isStopRequested())
         {
             /** Set up encoders **/
-            driveTrain = new MecanumEncoder(this);
+            driveTrain = new Omni(this);
             claw = new ClawEncoder(this);
             linearSlide = new LinearSlideEncoder(this);
 
@@ -210,19 +210,17 @@ public class AprilTagAuto extends LinearOpMode
 
         // -- PARKING --
 
-        driveTrain.moveForward(26.5,0.5);
-        driveTrain.moveForward(12,0.5);
-        driveTrain.moveForward(-12,0.5);
+        driveTrain.move(26.5, 0, 0.5);
+        driveTrain.move(12, 0, 0.5);
+        driveTrain.move(-12, 0, 0.5);
 
         if(tagOfInterest != null && tagOfInterest.id == LEFT)
         {
-            driveTrain.rotateDegrees(false, 80, 0.5);
-            driveTrain.moveForward(23.5, 0.5);
+            driveTrain.move(0, -23.5, 0.5);
         }
         else if(tagOfInterest != null && tagOfInterest.id == RIGHT)
         {
-            driveTrain.rotateDegrees(true, 80, 0.5);
-            driveTrain.moveForward(23.5, 0.5);
+            driveTrain.move(0, 23.5, 0.5);
         }
         else
         {
