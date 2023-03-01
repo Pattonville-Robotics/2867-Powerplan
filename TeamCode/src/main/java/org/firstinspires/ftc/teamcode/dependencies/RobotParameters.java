@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class RobotParameters {
     public static final double wheelRadius = 2;
     public static final double wheelBaseRadius = 12.5;
-    public static final int ticksPerRevolution = 1120;
+    public static final int ticksPerRevolution = 288;
 
     public static final double wheelCircumference = wheelRadius * 2 * Math.PI;
     public static final double wheelBaseCircumference = wheelBaseRadius * 2 * Math.PI;
