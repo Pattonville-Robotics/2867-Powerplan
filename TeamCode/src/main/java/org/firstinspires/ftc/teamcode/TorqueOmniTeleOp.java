@@ -169,18 +169,23 @@ public class TorqueOmniTeleOp extends LinearOpMode {
             telemetry.addData("barPosition : ", bar.getPos());
             telemetry.addData("barTarget : ", bar.motor.getTargetPosition());
             telemetry.addData("barPow : ", bar.motor.getPower());
+            telemetry.addData("barPow2: ", bar2.motor.getPower());
+            telemetry.addData("barPow: ", bar.motor.getDirection());
+            telemetry.addData("barPow2: ", bar2.motor.getDirection());
             telemetry.addData("targAngle : ", barAngle);
             telemetry.addData("barVel : ", bar.motor.getVelocity());
             telemetry.addData("stickX : ", x);
             telemetry.addData("stickY : ", y);
-            telemetry.addData("FL : ", frontLeftPower);
-            telemetry.addData("BL : ", backLeftPower);
-            telemetry.addData("FR : ", frontRightPower);
-            telemetry.addData("BR : ", backRightPower);
-            telemetry.addData("pose x : ", myPose.getX());
-            telemetry.addData("pose y : ", myPose.getY());
-            telemetry.addData("pose heading : ", myPose.getHeading());
+//            telemetry.addData("FL : ", frontLeftPower);
+//            telemetry.addData("BL : ", backLeftPower);
+//            telemetry.addData("FR : ", frontRightPower);
+//            telemetry.addData("BR : ", backRightPower);
+//            telemetry.addData("pose x : ", myPose.getX());
+//            telemetry.addData("pose y : ", myPose.getY());
+//            telemetry.addData("pose heading : ", myPose.getHeading());
             telemetry.addData("clawm : ", claw.getPosition());
+            telemetry.addData("balls : ", bar.motor.getMode() + " ||| " + bar2.motor.getMode());
+
 
             telemetry.update();
         }

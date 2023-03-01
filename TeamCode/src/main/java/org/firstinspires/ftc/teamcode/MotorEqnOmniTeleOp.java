@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.encoders.ArmEncoder;
@@ -26,9 +27,12 @@ public class MotorEqnOmniTeleOp extends LinearOpMode {
         // linear slide motor
         final ArmEncoder linearSlide = new ArmEncoder(this, "motorLinearSlide", 1200);
         final ArmEncoder linearSlide2 = new ArmEncoder(this, "motorLinearSlide2", 1200);
+
         // virtual 4 bar motor
         final ArmEncoder bar = new ArmEncoder(this, "motorBar", 10);
         final ArmEncoder bar2 = new ArmEncoder(this, "motorBar2", 10);
+        bar.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bar2.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         final ClawEncoder claw = new ClawEncoder(this);
         double x;
         double y;
@@ -167,6 +171,7 @@ public class MotorEqnOmniTeleOp extends LinearOpMode {
             telemetry.addData("barPosition: ", bar.getPos());
             telemetry.addData("barTarget: ", bar.motor.getTargetPosition());
             telemetry.addData("barPow: ", bar.motor.getPower());
+            telemetry.addData("barPow2: ", bar2.motor.getPower());
             telemetry.addData("targAngle : ", barAngle);
             telemetry.addData("barVel : ", bar.motor.getVelocity());
             telemetry.addData("stickX : ", x);

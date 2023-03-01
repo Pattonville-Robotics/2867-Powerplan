@@ -18,6 +18,7 @@ public class ArmEncoder {
     private ArmPosition currentPosition = ArmPosition.LS_ZERO;
     private float analogPos;
     private int speed;
+    private double lastTicks = 0;
 
     public ArmEncoder(LinearOpMode linearOp, String motorName, int speed) {
         this.linearOp = linearOp;
@@ -72,7 +73,7 @@ public class ArmEncoder {
         }
         else if (curPos > ArmPosition.BAR_MID.ticks) {
             // bar is now below midpoint, so moving "up" is with grav
-            p = (double) (curPos-targPos) / (max-mid);
+            p = (double) (curPos-targPos) / (max-mid) * -1;
 
         }
         else {
@@ -83,7 +84,7 @@ public class ArmEncoder {
         this.motor.setPower(p);
         // give leeway with position
         if (Math.abs(curPos - targPos) <= 30){
-            this.motor.setPower(Math.abs(p)*0.5);
+            this.motor.setPower(Math.abs(p)*0.8);
         }
 
     }
@@ -91,15 +92,15 @@ public class ArmEncoder {
     public void moveBarToAngle(double theta){
         this.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         // weight of bar in kg
-        double w = 0.2;
+        double w = 0.6;
         // length of bar in m
         double r = 0.4572;
         // stall torque of motor in Nm. we have 2 motors
-        double maxt = 3.2 * 2;
+        double maxt = 3.2;
 
         double t = w*r*Math.sin(Math.toRadians(theta));
 
-        this.motor.setPower(t/maxt);
+        this.motor.setPower(t/maxt*10);
 
     }
 

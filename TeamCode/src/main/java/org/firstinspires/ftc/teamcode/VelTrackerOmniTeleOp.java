@@ -4,6 +4,8 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.encoders.ArmEncoder;
@@ -29,6 +31,8 @@ public class VelTrackerOmniTeleOp extends LinearOpMode {
         // virtual 4 bar motor
         final ArmEncoder bar = new ArmEncoder(this, "motorBar", 10);
         final ArmEncoder bar2 = new ArmEncoder(this, "motorBar2", 10);
+        bar.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bar2.motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         final ClawEncoder claw = new ClawEncoder(this);
         double x;
         double y;
@@ -139,19 +143,28 @@ public class VelTrackerOmniTeleOp extends LinearOpMode {
 //            bar2.updateBarSpeed();
 
             // if this actually works im gonna be PISSED
+            int testNumber = 100;
             if (gamepad2.dpad_up){
-                bar.motor.setVelocity(3);
-                bar2.motor.setVelocity(3);
+                bar.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+                bar.motor.setDirection(DcMotorSimple.Direction.REVERSE);
+                bar.motor.setVelocity(testNumber);
+                bar2.motor.setVelocity(testNumber);
             }
 
             else if (gamepad2.dpad_down){
-                bar.motor.setVelocity(-3);
-                bar2.motor.setVelocity(-3);
+                bar.motor.setDirection(DcMotorSimple.Direction.FORWARD);
+                bar.motor.setDirection(DcMotorSimple.Direction.FORWARD);
+                bar.motor.setVelocity(testNumber);
+                bar2.motor.setVelocity(testNumber);
             }
 
             else {
-                bar.motor.setVelocity(0);
-                bar2.motor.setVelocity(0);
+//                bar.motor.setVelocity(0);
+//                bar2.motor.setVelocity(0);
+                bar.motor.setDirection(DcMotorSimple.Direction.FORWARD);
+                bar.motor.setDirection(DcMotorSimple.Direction.FORWARD);
+                bar.motor.setVelocity(testNumber);
+                bar2.motor.setVelocity(testNumber);
             }
 
 //            bar.moveBarToAngle(barAngle);
@@ -175,6 +188,7 @@ public class VelTrackerOmniTeleOp extends LinearOpMode {
             telemetry.addData("barPosition: ", bar.getPos());
             telemetry.addData("barTarget: ", bar.motor.getTargetPosition());
             telemetry.addData("barPow: ", bar.motor.getPower());
+            telemetry.addData("barPow2: ", bar2.motor.getPower());
             telemetry.addData("targAngle : ", barAngle);
             telemetry.addData("barVel : ", bar.motor.getVelocity());
             telemetry.addData("stickX : ", x);
