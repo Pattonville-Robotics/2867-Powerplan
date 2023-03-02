@@ -13,9 +13,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 import org.firstinspires.ftc.teamcode.encoders.BarEncoder;
+import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 import org.firstinspires.ftc.teamcode.encoders.OmniEncoder;
-
 
 @TeleOp
 public class RollaTeleOp extends LinearOpMode {
@@ -31,6 +31,7 @@ public class RollaTeleOp extends LinearOpMode {
         // init, but not started.
         final BarEncoder bar = new BarEncoder(this);
         final OmniEncoder drive = new OmniEncoder(this);
+        final LinearSlideEncoder slide = new LinearSlideEncoder(this);
 
         waitForStart();
         if (isStopRequested()) return;
@@ -56,6 +57,7 @@ public class RollaTeleOp extends LinearOpMode {
             bar.updatePID();
 
             // slide
+            slide.setPower(gamepad2.right_stick_y);
 
 
             // telem

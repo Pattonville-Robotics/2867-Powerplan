@@ -52,6 +52,10 @@ public class LinearSlideEncoder {
         analogPos = motor.getCurrentPosition();
     }
 
+    public void setPower(double p){
+        motor.setPower(p);
+    }
+
     public void reset() {
         // Reset the motor's "0" position. Only necessary in case the slide string gets stuck going down to make positions enum accurate.
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
