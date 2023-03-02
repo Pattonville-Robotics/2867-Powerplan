@@ -17,8 +17,8 @@ public class OmniEncoder {
 
     public OmniEncoder(LinearOpMode linearOp){
         HardwareMap hardwareMap = linearOp.hardwareMap;
-        motorTop = (DcMotorEx) hardwareMap.dcMotor.get("Top");
-        motorBottom = (DcMotorEx) hardwareMap.dcMotor.get("Bottom");
+        motorTop = (DcMotorEx) hardwareMap.dcMotor.get("Front");
+        motorBottom = (DcMotorEx) hardwareMap.dcMotor.get("Back");
         motorLeft = (DcMotorEx) hardwareMap.dcMotor.get("Left");
         motorRight = (DcMotorEx) hardwareMap.dcMotor.get("Right");
         motorList = new DcMotorEx[]{motorTop, motorBottom, motorLeft, motorRight};
