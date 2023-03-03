@@ -15,6 +15,11 @@ public class OmniEncoder {
     DcMotorEx motorRight;
     DcMotorEx[] motorList;
 
+    double topSpd;
+    double bottomSpd;
+    double leftSpd;
+    double rightSpd;
+
     public OmniEncoder(LinearOpMode linearOp){
         HardwareMap hardwareMap = linearOp.hardwareMap;
         motorTop = (DcMotorEx) hardwareMap.dcMotor.get("Front");
@@ -69,14 +74,24 @@ public class OmniEncoder {
         double rightP = -y;
 
         // motor ticks
-        int xT = inToTicks(strafeInches);
-        int yT = inToTicks(moveInches);
+        int xT = inToTicks(moveInches);
+        int yT = inToTicks(strafeInches);
         int topT = xT;
         int bottomT = -xT;
         int leftT = yT;
         int rightT = -yT;
 
-        setPower(topP,bottomP,leftP,rightP);
+        // calculate speed multipliers
+        topSpd = ((double) motorTop.getTargetPosition() - motorTop.getCurrentPosition()) / (motorTop.getTargetPosition());
+        bottomSpd = ((double) motorBottom.getTargetPosition() - motorBottom.getCurrentPosition()) / (motorBottom.getTargetPosition());
+        leftSpd = ((double) motorLeft.getTargetPosition() - motorLeft.getCurrentPosition()) / (motorLeft.getTargetPosition());
+        rightSpd = ((double) motorRight.getTargetPosition() - motorRight.getCurrentPosition()) / (motorRight.getTargetPosition());
+
+        setPower(topP*topSpd,
+                bottomP*bottomSpd,
+                leftP*leftSpd,
+                rightP*rightSpd);
+
         setTarget(topT, bottomT, leftT, rightT);
 
         // do not run more methods until target is reached (motors will stop being busy)
