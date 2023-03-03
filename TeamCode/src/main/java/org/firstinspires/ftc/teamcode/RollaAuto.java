@@ -28,18 +28,16 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.encoders.BarEncoder;
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
-import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
 import org.firstinspires.ftc.teamcode.encoders.OmniEncoder;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 
 @Autonomous
-public class AprilTagAuto extends LinearOpMode
+public class RollaAuto extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;

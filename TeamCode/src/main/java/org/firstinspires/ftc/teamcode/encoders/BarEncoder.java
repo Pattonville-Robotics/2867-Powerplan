@@ -17,11 +17,11 @@ public class BarEncoder {
     private static DcMotorEx motor1;
     private static DcMotorEx motor2;
 
-    private static final double p = 0;
+    private static final double p = 0.01;
     private static final double i = 0;
     private static final double d = 0;
 
-    public static double f = 0;
+    public static double f = 0.01;
 
     public static int targPos = 0;
 
