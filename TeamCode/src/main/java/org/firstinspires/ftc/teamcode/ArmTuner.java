@@ -19,11 +19,11 @@ public class ArmTuner extends OpMode {
     private PIDController controller;
     private PIDController controller2;
 
-    public static double p = 0;
+    public static double p = 0.01;
     public static double i = 0;
     public static double d = 0;
 
-    public static double f = 0;
+    public static double f = 0.01;
 
     public static int targPos = 0;
     private int tester = 0;
@@ -64,7 +64,7 @@ public class ArmTuner extends OpMode {
         double p = pid + feedForward;
         double p2 = pid2 + feedForward2;
 
-        bar1.setPower(p);
+        bar1.setPower(p2);
         bar2.setPower(p2);
 
         tester++;
