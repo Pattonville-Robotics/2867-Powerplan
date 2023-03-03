@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class LinearSlideEncoder {
     LinearOpMode linearOp;
     public DcMotor motor;
+    public DcMotor motor2;
     public LinearPosition currentPosition = LinearPosition.ZERO;
     public float analogPos;
 
@@ -17,6 +18,12 @@ public class LinearSlideEncoder {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setTargetPosition(0);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motor2 = hardwareMap.dcMotor.get("motorLinearSlide2");
+        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor2.setTargetPosition(0);
+        motor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
     }
     // Tested heights for junctions, in motor ticks.
     public enum LinearPosition {
@@ -54,6 +61,7 @@ public class LinearSlideEncoder {
 
     public void setPower(double p){
         motor.setPower(p);
+        motor2.setPower(p);
     }
 
     public void reset() {
