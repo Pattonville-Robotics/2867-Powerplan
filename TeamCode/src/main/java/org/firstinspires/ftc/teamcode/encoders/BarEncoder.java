@@ -34,10 +34,12 @@ public class BarEncoder {
 
         motor1 = hardwareMap.get(DcMotorEx.class, "motorBar");
         motor1.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor1.setTargetPosition(0);
         motor1.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         motor2 = hardwareMap.get(DcMotorEx.class, "motorBar2");
         motor2.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        motor2.setTargetPosition(0);
         motor2.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
     }

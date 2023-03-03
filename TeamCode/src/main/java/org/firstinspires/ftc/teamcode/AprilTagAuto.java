@@ -25,6 +25,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.encoders.BarEncoder;
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 import org.firstinspires.ftc.teamcode.encoders.LinearSlideEncoder;
 import org.firstinspires.ftc.teamcode.encoders.MecanumEncoder;
@@ -47,6 +48,8 @@ public class AprilTagAuto extends LinearOpMode
 
     ClawEncoder claw;
     OmniEncoder driveTrain;
+    LinearSlideEncoder slide;
+    BarEncoder bar;
     boolean rightSided = false;
 
     // Lens intrinsics
@@ -111,7 +114,8 @@ public class AprilTagAuto extends LinearOpMode
             /** Set up encoders **/
             driveTrain = new OmniEncoder(this);
             claw = new ClawEncoder(this);
-//            linearSlide = new LinearSlideEncoder(this);
+            slide = new LinearSlideEncoder(this);
+            bar = new BarEncoder(this);
 
             // #justapriltagthings
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
