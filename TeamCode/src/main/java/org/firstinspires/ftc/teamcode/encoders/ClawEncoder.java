@@ -8,8 +8,8 @@ public class ClawEncoder {
     private final Servo claw;
     private boolean isOpen = true;
     // exact positions found with telemetry and testing
-    private final double openPosition = 0.29;
-    private final double closedPosition = 0.395;
+    private final double openPosition = 0.02;
+    private final double closedPosition = 0.0;
     public ClawEncoder(LinearOpMode linearOp) {
         HardwareMap hardwareMap = linearOp.hardwareMap;
         claw = hardwareMap.servo.get("claw");
@@ -27,14 +27,16 @@ public class ClawEncoder {
         isOpen = false;
     }
 
+    public double getServoPos() {
+        return claw.getPosition();
+    }
+
     public boolean getPosition() {
         return (isOpen);
     }
 
     public void changeClaw(double change) {
         // keep the servo within reasonable bounds before changing.
-        if (change > 0 && claw.getPosition() >= 0.95) { return; }
-        if (change < 0 && claw.getPosition() <= 0.05) { return; }
         claw.setPosition(claw.getPosition() + change);
 
     }

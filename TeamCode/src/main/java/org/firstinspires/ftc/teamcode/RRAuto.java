@@ -22,6 +22,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -46,6 +47,7 @@ import org.firstinspires.ftc.teamcode.dependencies.Waypoints;
 import java.util.ArrayList;
 
 @Autonomous
+@Disabled
 public class RRAuto extends LinearOpMode
 {
     OpenCvCamera camera;

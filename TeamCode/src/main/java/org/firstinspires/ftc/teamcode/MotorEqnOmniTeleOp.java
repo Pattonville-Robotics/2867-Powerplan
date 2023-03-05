@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.encoders.ArmEncoder;
 import org.firstinspires.ftc.teamcode.encoders.ClawEncoder;
 
 @TeleOp
-//@Disabled
+@Disabled
 public class MotorEqnOmniTeleOp extends LinearOpMode {
 
     final float slideSpeed = 0.5f;

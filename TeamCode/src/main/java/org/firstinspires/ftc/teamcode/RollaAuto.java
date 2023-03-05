@@ -71,9 +71,9 @@ public class RollaAuto extends LinearOpMode
     public void dropCone() {
         for (int i = 0; i < 10; i++) {
             claw.closeClaw();
-            sleep(250);
+            sleep(250L);
             claw.openClaw();
-            sleep(250);
+            sleep(250L);
         }
     }
 
@@ -170,7 +170,7 @@ public class RollaAuto extends LinearOpMode
             }
 
             telemetry.update();
-            sleep(20);
+            sleep(20L);
         }
 
         /*
@@ -212,21 +212,27 @@ public class RollaAuto extends LinearOpMode
 
         // -- PARKING --
 
-        driveTrain.move(26.5, 0, 0.5);
-        driveTrain.move(12, 0, 0.5);
-        driveTrain.move(-12, 0, 0.5);
+        driveTrain.move(0, 26.5, 0.5);
+        sleep(2700);
+        driveTrain.move(0, 6, 0.5);
+//        sleep(1000);
+//        driveTrain.move(0, -6, 0.5);
+//        sleep(1500);
 
         if(tagOfInterest != null && tagOfInterest.id == LEFT)
         {
-            driveTrain.move(0, -23.5, 0.5);
+            driveTrain.move(-23.5, 0, 0.5);
+            sleep(450);
         }
         else if(tagOfInterest != null && tagOfInterest.id == RIGHT)
         {
-            driveTrain.move(0, 23.5, 0.5);
+            driveTrain.move(23.5 , 0, 0.5);
+            sleep(450);
         }
         else
         {
             // robot is already in position 2, so do nothing.
+            driveTrain.setPower(0);
         }
 
     }

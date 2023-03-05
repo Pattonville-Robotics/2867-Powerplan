@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.encoders;
 
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -15,12 +17,13 @@ public class OmniEncoder {
     DcMotorEx motorRight;
     DcMotorEx[] motorList;
 
-    double topSpd;
-    double bottomSpd;
-    double leftSpd;
-    double rightSpd;
+    double topSpd = 1d;
+    double bottomSpd = 1d;
+    double leftSpd = 1d;
+    double rightSpd = 1d;
 
     public OmniEncoder(LinearOpMode linearOp){
+        this.linearOp = linearOp;
         HardwareMap hardwareMap = linearOp.hardwareMap;
         motorTop = (DcMotorEx) hardwareMap.dcMotor.get("Front");
         motorBottom = (DcMotorEx) hardwareMap.dcMotor.get("Back");
@@ -82,10 +85,10 @@ public class OmniEncoder {
         int rightT = -yT;
 
         // calculate speed multipliers
-        topSpd = ((double) motorTop.getTargetPosition() - motorTop.getCurrentPosition()) / (motorTop.getTargetPosition());
-        bottomSpd = ((double) motorBottom.getTargetPosition() - motorBottom.getCurrentPosition()) / (motorBottom.getTargetPosition());
-        leftSpd = ((double) motorLeft.getTargetPosition() - motorLeft.getCurrentPosition()) / (motorLeft.getTargetPosition());
-        rightSpd = ((double) motorRight.getTargetPosition() - motorRight.getCurrentPosition()) / (motorRight.getTargetPosition());
+//        topSpd = ((double) motorTop.getTargetPosition() - motorTop.getCurrentPosition()) / (motorTop.getTargetPosition());
+//        bottomSpd = ((double) motorBottom.getTargetPosition() - motorBottom.getCurrentPosition()) / (motorBottom.getTargetPosition());
+//        leftSpd = ((double) motorLeft.getTargetPosition() - motorLeft.getCurrentPosition()) / (motorLeft.getTargetPosition());
+//        rightSpd = ((double) motorRight.getTargetPosition() - motorRight.getCurrentPosition()) / (motorRight.getTargetPosition());
 
         setPower(topP*topSpd,
                 bottomP*bottomSpd,
@@ -95,9 +98,12 @@ public class OmniEncoder {
         setTarget(topT, bottomT, leftT, rightT);
 
         // do not run more methods until target is reached (motors will stop being busy)
-        if (motorsAreBusy(motorList) && linearOp.opModeIsActive()){
+        if (motorsAreBusy() && linearOp.opModeIsActive()){
             Thread.yield();
         }
+
+//        setPower(0);
+//        this.linearOp.sleep(100L);
 
     }
 
@@ -112,7 +118,7 @@ public class OmniEncoder {
         setTarget(t);
 
         // do not run more methods until target is reached (motors will stop being busy)
-        if (motorsAreBusy(motorList) && linearOp.opModeIsActive()){
+        if (motorsAreBusy() && linearOp.opModeIsActive()){
             Thread.yield();
         }
     }
@@ -129,13 +135,14 @@ public class OmniEncoder {
         return (RobotParameters.wheelBaseCircumference) * (degrees/360);
     }
 
-    public boolean motorsAreBusy(DcMotorEx[] motorList){
-        for (DcMotorEx m : motorList){
-            if (m.isBusy()){
-                return true;
+    public boolean motorsAreBusy() {
+        boolean busy = true;
+        for (DcMotor motor : motorList) {
+            if (!motor.isBusy()) {
+                busy = false;
+                break;
             }
         }
-        return false;
-
+        return busy;
     }
 }

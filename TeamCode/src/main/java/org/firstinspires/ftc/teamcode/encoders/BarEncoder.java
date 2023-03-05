@@ -24,6 +24,7 @@ public class BarEncoder {
     public static double f = 0.01;
 
     public static int targPos = 0;
+    private static int curPos = 0;
 
     // ticks per degree. ticks per rev divided by full rev
     private final double tpd = (double) 288 / 360;
@@ -46,7 +47,7 @@ public class BarEncoder {
 
     public void updatePID(){
         controller.setPID(p, i, d);
-        int curPos = motor1.getCurrentPosition();
+        curPos = motor1.getCurrentPosition();
         double pid = controller.calculate(curPos, targPos);
         double feedForward = Math.cos(Math.toRadians(targPos / tpd)) * f;
 
@@ -63,4 +64,16 @@ public class BarEncoder {
     public int getTargPos(){
         return targPos;
     }
+    public int getCurPos(){
+        return curPos;
+    }
+    public double getPower(){
+        return motor1.getPower();
+    }
+
+    public double getPower2(){
+        return motor2.getPower();
+    }
 }
+
+

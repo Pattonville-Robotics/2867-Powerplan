@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.encoders.OmniEncoder;
 public class RollaTeleOp extends LinearOpMode {
 
     // how fast the V4b motor will move with analogue stick
-    private final double armSpd = 10;
+    private final double armSpd = 1.5;
 
     double heading;
 
@@ -55,17 +55,19 @@ public class RollaTeleOp extends LinearOpMode {
             double y = gamepad1.left_stick_y;
             double rx = gamepad1.right_stick_x;
 
+            double spdMult = ( 1.0d / (1.0 + (gamepad1.left_trigger + gamepad1.right_trigger)*2.0));
+
             // driver centric stuffs
             heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-            double driverX = x * Math.cos(-heading) - y * Math.sin(-heading);
-            double driverY = x * Math.sin(-heading) + y * Math.cos(-heading);
+            double driverX = x;
+            double driverY = y;
 
-            double topP = (-driverX + rx);
-            double bottomP = (driverX + rx);
-            double leftP = (driverY + rx);
-            double rightP = (-driverY + rx);
+            double topP = (-x + rx);
+            double bottomP = (x + rx);
+            double leftP = (y + rx);
+            double rightP = (-y + rx);
 
-            drive.setPower(topP, bottomP, leftP, rightP);
+            drive.setPower(topP*spdMult, bottomP*spdMult, leftP*spdMult, rightP*spdMult);
 
             // ARMS (V4B AND SLIDE)
             // v4b
@@ -73,23 +75,33 @@ public class RollaTeleOp extends LinearOpMode {
             bar.updatePID();
 
             // slide
-            slide.setPower(gamepad2.right_stick_y);
+            slide.analogMoveSlide(gamepad2.right_stick_y);
 
             // claw
             if (gamepad2.right_bumper){
-                if (claw.getPosition()){
-                    claw.closeClaw();
-                }
-                else{
-                    claw.openClaw();
-                }
+                claw.closeClaw();
+            }
+            if (gamepad2.left_bumper){
+                claw.openClaw();
             }
 
+            if (gamepad2.right_trigger > 0.1){
+                claw.changeClaw(0.004);
+            }
+            if (gamepad2.left_trigger > 0.1){
+                claw.changeClaw(-0.004);
+            }
             // telem
             telemetry.addData("topP ", topP);
             telemetry.addData("bottomP ", bottomP);
             telemetry.addData("leftP ", leftP);
             telemetry.addData("rightP ", rightP);
+            telemetry.addData("claw", claw.getServoPos());
+            telemetry.addData("slide", slide.getPower());
+            telemetry.addData("bar cur pos", bar.getCurPos());
+            telemetry.addData("bar targ pos", bar.getTargPos());
+            telemetry.addData("bar power ", bar.getPower());
+            telemetry.addData("bar power 2", bar.getPower2());
 
             telemetry.update();
         }
